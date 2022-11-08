@@ -56,10 +56,6 @@ public class Student extends Person{
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
         Scanner sc=new Scanner(new File("C:\\Users\\chk24\\Downloads\\Student.csv"));
-//        String[] str=sc.next().split(",");
-//        System.out.println(str[0]+str[1]+str[2]+str[3]+str[4]);
-//        sc.next();
-//        System.out.println(sc.next());
         while(sc.hasNextLine())
         {
             SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
@@ -72,7 +68,6 @@ public class Student extends Person{
             int day=Integer.parseInt(sr[0]);
             Date date=Date.valueOf(year+"-"+month+"-"+day);
             System.out.printf("%s\n",str[3]);
-//            Date d1=Date.valueOf(str[3]);
             ps.setString(1,str[0]);
             ps.setString(2,str[1]);
             ps.setString(3,str[2]);
