@@ -1,5 +1,14 @@
+
+
 package personPackage;
+import com.mysql.cj.jdbc.exceptions.PacketTooBigException;
+
+import java.io.File;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Student extends Person{
     private String studID;
@@ -33,8 +42,70 @@ public class Student extends Person{
         String ans = super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
         return ans;
     }
+    
+    
+   //Adds all the students from a csv file to database
+    public static void addStudents() throws Exception {
+        String url="jdbc:mysql://localhost:3306/lab5";
+        String UserName="root";
+        String PassWord="root1234";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Statement st=con.createStatement();
+        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        st.executeUpdate(query);
+        query="insert into Students values(?,?,?,?,?)";
+        PreparedStatement ps= con.prepareStatement(query);
+        Scanner sc=new Scanner(new File("C:\\Users\\chk24\\Downloads\\Student.csv"));
+        while(sc.hasNextLine())
+        {
+            SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+            SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+            String[] str=sc.nextLine().split(",");
+            System.out.println("str[0]:"+str[0]+"str[1]:"+str[1]+"str[2]:"+str[2]+"str[3]:"+str[3]+"str[1]:"+str[4]);
+            String[] sr=str[3].split("-");
+            int year=Integer.parseInt(sr[2]);
+            int month=Integer.parseInt(sr[1]);
+            int day=Integer.parseInt(sr[0]);
+            Date date=Date.valueOf(year+"-"+month+"-"+day);
+            System.out.printf("%s\n",str[3]);
+            ps.setString(1,str[0]);
+            ps.setString(2,str[1]);
+            ps.setString(3,str[2]);
+            ps.setDate(4,date);
+            ps.setString(5,str[4]);
+            ps.executeUpdate();
+        }
+    }
+    
+    //Adds particular student to the database
+    public static void addStudent(Student student) throws Exception {
+        String url="jdbc:mysql://localhost:3306/lab5";
+        String UserName="root";
+        String PassWord="root1234";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="insert into Students values(?,?,?,?,?)";
+        PreparedStatement ps=con.prepareStatement(query);
+        ps.setString(1,student.getStudID());
+        ps.setString(2,student.getName());
+        ps.setString(3,student.getBranch());
+        ps.setDate(4,Date.valueOf(student.getDob()));
+        ps.setString(5, student.getGender());
+        ps.executeUpdate();
+    }
 
-    public static void addStudent(Student student) {}
-    public static void removeStudent(Student student) {}
+
+
+        public static void removeStudent(Student student) throws SQLException {
+            String id=student.getStudID();
+            System.out.println(id);
+            String url="jdbc:mysql://localhost:3306/lab5";
+            String UserName="root";
+            String PassWord="root1234";
+            Connection con= DriverManager.getConnection(url,UserName,PassWord);
+            String query="delete from Students where studId=?";
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setString(1,id);
+            ps.executeUpdate();
+        }
 }
 
