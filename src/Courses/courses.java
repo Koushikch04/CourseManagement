@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.Scanner;
 
-//course(course id, title, dept name, credits)
 public class courses {
      private String courseId;
      private String title;
