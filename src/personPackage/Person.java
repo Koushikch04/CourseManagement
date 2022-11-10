@@ -7,6 +7,7 @@ abstract public class Person {
     private String gender;
     private LocalDate dob;
 
+    public Person() {};
     public Person(String name, String gender, LocalDate dob) {
         this.name = name;
         this.gender = gender;

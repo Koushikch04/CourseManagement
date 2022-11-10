@@ -13,7 +13,10 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        CommandLineArguments commandLineArguments = new CommandLineArguments();
-        System.out.println(commandLineArguments);
+        if(args.length==2) {
+            if(args[0].equals("-add")) {
+                AddCommand.add(args);
+            }
+        }
     }
 }

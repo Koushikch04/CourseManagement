@@ -1,7 +1,8 @@
 package CommandLine;
 
 public class CommandLineArguments {
-    public  CommandLineArguments() {};
+
+
     public String toString() {
         String s = "";
         s += "-add Student                  : For adding a particular Student!\n";
