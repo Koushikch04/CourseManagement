@@ -1,5 +1,5 @@
 package personPackage;
-
+import  Courses.courses;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -63,8 +63,8 @@ public class Teacher extends Person{
         return ans;
     }
 
-     public  static  void addTeachers() throws SQLException, FileNotFoundException {
-         String url="jdbc:mysql://localhost:3306/lab6";
+     public  static  void addTeachers(String file) throws SQLException, FileNotFoundException {
+         String url="jdbc:mysql://localhost:3306/lab8";
          String UserName="root";
          String PassWord="root1234";
          Connection con= DriverManager.getConnection(url,UserName,PassWord);
@@ -73,7 +73,7 @@ public class Teacher extends Person{
          st.executeUpdate(query);
          query="insert into Teacher values(?,?,?,?,?,?,?)";
          PreparedStatement ps=con.prepareStatement(query);
-         Scanner sc=new Scanner(new File("C:\\Users\\chk24\\Downloads\\Instructor.csv"));
+         Scanner sc=new Scanner(new File("src/personPackage/"+file));
          while(sc.hasNextLine()) {
              String[] sr=sc.nextLine().split(",");
              System.out.println(sr[5]);
@@ -93,7 +93,7 @@ public class Teacher extends Person{
          }
      }
     public static void addTeacher(Teacher teacher) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab6";
+        String url="jdbc:mysql://localhost:3306/lab8";
         String UserName="root";
         String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
@@ -112,14 +112,14 @@ public class Teacher extends Person{
         ps.executeUpdate();
         System.out.println("Teacher added");
     }
-    public static void removeTeacher(Teacher teacher) throws SQLException {
+    public static void removeTeacher(String teacherID) throws SQLException {
         String url="jdbc:mysql://localhost:3306/lab6";
         String UserName="root";
         String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="delete from Teacher where ID=?";
         PreparedStatement ps=con.prepareStatement(query);
-        ps.setString(1,teacher.getTeacherID());
+        ps.setString(1,teacherID);
         ps.executeUpdate();
         System.out.println("Teacher removed successfully");
     }
