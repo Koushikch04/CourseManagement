@@ -1,5 +1,4 @@
 package personPackage;
-import com.mysql.cj.jdbc.exceptions.PacketTooBigException;
 
 import java.io.File;
 import java.sql.*;
@@ -67,7 +66,6 @@ public class Student extends Person{
             int day=Integer.parseInt(sr[0]);
             Date date=Date.valueOf(year+"-"+month+"-"+day);
             System.out.printf("%s\n",str[3]);
-//            Date d1=Date.valueOf(str[3]);
             ps.setString(1,str[0].trim());
             ps.setString(2,str[1]);
             ps.setString(3,str[2]);
