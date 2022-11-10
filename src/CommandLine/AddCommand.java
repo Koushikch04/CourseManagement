@@ -91,7 +91,11 @@ public class AddCommand {
 
                 Student stud = new Student();
                 addStudentGUI(stud);
-                System.out.println(stud.getName() + " " + stud.getStudID() + " " + stud.getBranch() + " " + stud.getGender() + " " + stud.getDob());
+                try {
+                    Student.addStudent(stud);
+                } catch (Exception e) {
+                    System.out.println("Couldn't add the student!");
+                }
             }
         }
     }
