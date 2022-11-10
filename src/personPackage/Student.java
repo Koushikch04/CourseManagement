@@ -44,9 +44,9 @@ public class Student extends Person{
     }
 
     public static void addStudents(String file) throws Exception {
-        String url="jdbc:mysql://localhost:3306/lab9";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
         String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
@@ -75,9 +75,9 @@ public class Student extends Person{
         }
     }
     public static void addStudent(Student student) throws Exception {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps=con.prepareStatement(query);
@@ -91,15 +91,15 @@ public class Student extends Person{
 
 
 
-        public static void removeStudent(String studId) throws SQLException {
-            String url="jdbc:mysql://localhost:3306/lab5";
-            String UserName="root";
-            String PassWord="root1234";
-            Connection con= DriverManager.getConnection(url,UserName,PassWord);
-            String query="delete from Students where studId=?";
-            PreparedStatement ps= con.prepareStatement(query);
-            ps.setString(1,studId);
-            ps.executeUpdate();
-        }
+    public static void removeStudent(String studId) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/lab5";
+        String UserName="root";
+        String PassWord="root1234";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="delete from Students where studId=?";
+        PreparedStatement ps= con.prepareStatement(query);
+        ps.setString(1,studId);
+        ps.executeUpdate();
+    }
 }
 

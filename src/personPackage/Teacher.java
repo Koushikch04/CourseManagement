@@ -30,6 +30,7 @@ public class Teacher extends Person{
         this.salary = salary;
     }
 
+    public Teacher() {super();}
     public Teacher(String name, String gender, LocalDate dob, String teacherID, String deptName, String title, Double salary) {
         super(name, gender, dob);
         this.teacherID = teacherID;
@@ -93,9 +94,9 @@ public class Teacher extends Person{
          }
      }
     public static void addTeacher(Teacher teacher) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab8";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="create table if not exists Teacher  (ID varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(ID))";
         Statement st=con.createStatement();

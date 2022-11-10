@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class AddCommand {
+public class AddStudentCommand {
     public static void addStudentGUI(Student student) {
         final JTextField f1 = new JTextField();
         final JTextField f2 = new JTextField();
@@ -48,11 +48,11 @@ public class AddCommand {
         l6.setFont(new Font("Serif", Font.PLAIN, 20));
         l6.setBounds(69,22,215,27);
         fr.getContentPane().add(l6);
-        f1.setBounds(182, 73, 108, 20);
-        f2.setBounds(182, 105, 108, 20);
-        f3.setBounds(182, 138, 108, 20);
-        f4.setBounds(182, 175, 108, 20);
-        f5.setBounds(182, 212, 108, 20);
+        f1.setBounds(182, 73, 150, 20);
+        f2.setBounds(182, 105, 150, 20);
+        f3.setBounds(182, 138, 150, 20);
+        f4.setBounds(182, 175, 150, 20);
+        f5.setBounds(182, 212, 150, 20);
 
         fr.getContentPane().add(f1, BorderLayout.NORTH);
         fr.getContentPane().add(f2);
@@ -63,7 +63,7 @@ public class AddCommand {
         b.setBounds(118, 263, 122, 33);
         fr.getContentPane().add(b);
         JLabel lab = new JLabel("New label");
-        lab.setIcon(new ImageIcon("CommandLine/image.png"));
+        lab.setIcon(new ImageIcon("src/CommandLine/image.png"));
         lab.setBounds(0, 0, 950, 371);
         fr.getContentPane().add(lab);
         fr.getContentPane().setLayout(null);
@@ -87,15 +87,22 @@ public class AddCommand {
     }
     public static void add(String[] args) {
         if(args.length==2) {
-            if(args[1].equals("Student")) {
+            Student stud = new Student();
+            addStudentGUI(stud);
 
-                Student stud = new Student();
-                addStudentGUI(stud);
-                try {
-                    Student.addStudent(stud);
-                } catch (Exception e) {
-                    System.out.println("Couldn't add the student!");
-                }
+            try {
+                Student.addStudent(stud);
+
+            } catch (Exception e) {
+                System.out.println("Couldn't add the student!");
+            }
+            System.exit(0);
+        } else if(args.length==3) {
+            try {
+                System.out.println(args[2]);
+                Student.addStudents(args[2]);
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
     }
