@@ -12,6 +12,9 @@ public class Student extends Person{
     private String studID;
     private String branch;
 
+    public Student() {
+        super();
+    }
     public Student(String name, String gender, LocalDate dob, String studID, String deptName) {
         super(name, gender, dob);
         this.studID = studID;
