@@ -1,11 +1,10 @@
 package Courses;
-
-import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.Scanner;
 
+//course(course id, title, dept name, credits)
 public class courses {
      private String courseId;
      private String title;
@@ -63,8 +62,9 @@ public class courses {
     public String toString() {
         return "courseId:"+getCourseId()+" title:"+getTitle()+" deptName:"+getDeptName()+" credits:"+getCredits();
     }
-    public static void addCourses() throws SQLException, FileNotFoundException {
-        String url = "jdbc:mysql://localhost:3306/lab3";
+
+    public static void addCourses(String file) throws SQLException, FileNotFoundException {
+        String url = "jdbc:mysql://localhost:3306/lab4";
         String UserName = "root";
         String PassWord = "root1234";
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
@@ -73,8 +73,7 @@ public class courses {
         st.executeUpdate(query);
         query="insert into courses values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        File file=new File("C:\\Users\\chk24\\Downloads\\course.csv");
-        Scanner sc=new Scanner(file);
+        Scanner sc=new Scanner(new File("src/personPackage/"+file));
         while(sc.hasNextLine())
         {
             String[] str=sc.nextLine().split(",");
@@ -103,14 +102,14 @@ public class courses {
         ps.setInt(5,course.getCredits());
         ps.executeUpdate();
     }
-    public static void removeCourse(courses cs) throws SQLException {
+    public static void removeCourse(String courseId) throws SQLException {
         String url = "jdbc:mysql://localhost:3306/lab3";
         String UserName = "root";
         String PassWord = "root1234";
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query="delete from courses where courseId=?";
         PreparedStatement ps=con.prepareStatement(query);
-        ps.setString(1,cs.getCourseId());
+        ps.setString(1,courseId);
         System.out.println(ps.executeUpdate()+" rows updated");
     }
 }
