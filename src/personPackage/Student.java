@@ -17,7 +17,7 @@ public class Student extends Person  implements Comparable<Student>{
     public Student() {
         super();
     }
-    public Student(String name, String gender, LocalDate dob, String studID, String deptName) {
+    public Student(String studID, String name, String deptName, LocalDate dob, String gender) {
         super(name, gender, dob);
         this.studID = studID;
         this.branch = deptName;
@@ -106,7 +106,7 @@ public class Student extends Person  implements Comparable<Student>{
         ResultSet rs=st.executeQuery(query);
         while(rs.next())
         {
-            Student temp=new Student(rs.getString(2),rs.getString(5), rs.getDate(4).toLocalDate(),rs.getString(1),rs.getString(3));
+            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
             studentList.add(temp);
         }
         Collections.sort(studentList);
@@ -129,7 +129,7 @@ public class Student extends Person  implements Comparable<Student>{
         ResultSet rs=st.executeQuery(query);
         while(rs.next())
         {
-            Student temp=new Student(rs.getString(2),rs.getString(5), rs.getDate(4).toLocalDate(),rs.getString(1),rs.getString(3));
+            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
             studentList.add(temp);
         }
         Collections.sort(studentList,new branchCompare());

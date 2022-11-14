@@ -112,14 +112,14 @@ public class TeachersCommands {
                 Teacher.addTeacher(teacher);
 
             } catch (Exception e) {
-                System.out.println("Couldn't add the Teacher!");
+                System.out.println(e);
             }
             System.exit(0);
         } else {
             try {
                 Teacher.addTeachers(args[2]);
             } catch (Exception e) {
-                System.out.println("Couldn't add the Teacher!");
+                System.out.println(e);
             }
         }
     }
@@ -127,6 +127,20 @@ public class TeachersCommands {
     public static void connect(String args[]) {
         if(args[0].equals("-add")) {
             add(args);
+        } else if(args[0].equals("-rmv")) {
+            if(args.length==3) {
+                try {
+                    Teacher.removeTeacher(args[2]);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else {
+                try {
+                    Teacher.removeTeachers();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
         }
     }
 
