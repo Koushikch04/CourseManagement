@@ -9,9 +9,9 @@ public class Main {
             System.out.println(commandLineArguments);
             return;
         }
-        if(args[1].equals("Student")) {
+        if(args[1].equals("Students")) {
             StudentsCommands.connect(args);
-        } else if(args[1].equals("Teacher")) {
+        } else if(args[1].equals("Teachers")) {
             TeachersCommands.connect(args);
         }
     }

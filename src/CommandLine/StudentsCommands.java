@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 public class StudentsCommands {
-    public static void addStudentGUI(Student student) {
+    private static void addStudentGUI(Student student) {
         final JTextField f1 = new JTextField();
         final JTextField f2 = new JTextField();
         final JTextField f3 = new JTextField("YY-MM-DD FORMAT");
@@ -85,7 +85,7 @@ public class StudentsCommands {
         });
         fr.setVisible(true);
     }
-    public static void add(String[] args) {
+    private static void add(String[] args) {
         if(args.length==2) {
             Student stud = new Student();
             addStudentGUI(stud);
@@ -94,9 +94,9 @@ public class StudentsCommands {
                 Student.addStudent(stud);
 
             } catch (Exception e) {
-                System.out.println("Couldn't add the student!");
+                System.out.println(e);
             }
-            return;
+            System.exit(0);
         } else if(args.length==3) {
             try {
                 Student.addStudents(args[2]);
@@ -107,8 +107,57 @@ public class StudentsCommands {
     }
 
     public static void connect(String args[]) {
-        if(args[0].equals("-add")) {
+        if (args[0].equals("-add")) {
             add(args);
+        } else if (args[0].equals("-details")) {
+            if (args.length == 4) {
+                if (args[3].equals("studId")) {
+                    try {
+                        Student.SortById();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                } else if(args[3].equals("deptName")) {
+                    try {
+                        Student.SortByBranch();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        } else if(args[0].equals("-search")) {
+            if(args[2].equals("studId")) {
+                try {
+                    Student.printDetailsById(args[3]);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else if(args[2].equals("name")) {
+                String tempName = args[3];
+                if(args.length>4) {
+                    int n = args.length;
+                    for(int i = 4; i<n; i++) tempName = tempName + " " + args[i];
+                }
+                try {
+                    Student.printDetailsByName(tempName);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        } else if(args[0].equals("-rmv")) {
+            if(args.length==2) {
+                try {
+                    Student.removeStudents();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else {
+                try {
+                    Student.removeStudent(args[2]);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
         }
     }
 

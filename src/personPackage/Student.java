@@ -94,6 +94,7 @@ public class Student extends Person  implements Comparable<Student>{
         ps.setString(5, student.getGender());
         ps.executeUpdate();
     }
+
     public static  void SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
@@ -140,29 +141,26 @@ public class Student extends Person  implements Comparable<Student>{
         }
     }
 
+    public static void removeStudent(String studId) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="delete from Students where studId=?";
+        PreparedStatement ps= con.prepareStatement(query);
+        ps.setString(1,studId);
+        ps.executeUpdate();
+    }
 
-
-
-        public static void removeStudent(String studId) throws SQLException {
-            String url="jdbc:mysql://localhost:3306/java";
-            String UserName="root";
-            String PassWord="Suprit@123";
-            Connection con= DriverManager.getConnection(url,UserName,PassWord);
-            String query="delete from Students where studId=?";
-            PreparedStatement ps= con.prepareStatement(query);
-            ps.setString(1,studId);
-            ps.executeUpdate();
-        }
-
-        public static void removeStudents() throws SQLException {
-            String url="jdbc:mysql://localhost:3306/java";
-            String UserName="root";
-            String PassWord="Suprit@123";
-            Connection con= DriverManager.getConnection(url,UserName,PassWord);
-            Statement st=con.createStatement();
-            String query="truncate Students";
-            st.executeUpdate(query);
-}
+    public static void removeStudents() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Statement st=con.createStatement();
+        String query="truncate Students";
+        st.executeUpdate(query);
+    }
 
     @Override
     public int compareTo(Student o) {
@@ -202,7 +200,7 @@ public class Student extends Person  implements Comparable<Student>{
         else {
             rs= ps.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + rs.getString(4) + rs.getString(5));
+                System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " +rs.getString(4) + rs.getString(5));
             }
         }
     }
