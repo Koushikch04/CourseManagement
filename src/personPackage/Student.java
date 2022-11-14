@@ -47,10 +47,9 @@ public class Student extends Person  implements Comparable<Student>{
     }
 
     public static void addStudents(String file) throws Exception {
-//        String url="jdbc:mysql://localhost:3306/lab04";
-        String url="jdbc:mysql://localhost:3306/lab04";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
         String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
@@ -63,13 +62,13 @@ public class Student extends Person  implements Comparable<Student>{
             SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
             SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
             String[] str=sc.nextLine().split(",");
-            System.out.println("str[0]:"+str[0]+"str[1]:"+str[1]+"str[2]:"+str[2]+"str[3]:"+str[3]+"str[4]:"+str[4]);
+//            System.out.println("str[0]:"+str[0]+"str[1]:"+str[1]+"str[2]:"+str[2]+"str[3]:"+str[3]+"str[4]:"+str[4]);
             String[] sr=str[3].split("-");
             int year=Integer.parseInt(sr[2]);
             int month=Integer.parseInt(sr[1]);
             int day=Integer.parseInt(sr[0]);
             Date date= Date.valueOf(year+"-"+month+"-"+day);
-            System.out.printf("%s\n",str[3]);
+//            System.out.printf("%s\n",str[3]);
             ps.setString(1,str[0].trim());
             ps.setString(2,str[1]);
             ps.setString(3,str[2]);
@@ -79,9 +78,9 @@ public class Student extends Person  implements Comparable<Student>{
         }
     }
     public static void addStudent(Student student) throws Exception {
-        String url="jdbc:mysql://localhost:3306/lab8";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
         String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
@@ -96,9 +95,9 @@ public class Student extends Person  implements Comparable<Student>{
         ps.executeUpdate();
     }
     public static  void SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st= con.createStatement();
         String query="select * from Students";
@@ -119,9 +118,9 @@ public class Student extends Person  implements Comparable<Student>{
     }
 
     public static  void SortByBranch() throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st= con.createStatement();
         String query="select * from Students";
@@ -145,9 +144,9 @@ public class Student extends Person  implements Comparable<Student>{
 
 
         public static void removeStudent(String studId) throws SQLException {
-            String url="jdbc:mysql://localhost:3306/lab5";
+            String url="jdbc:mysql://localhost:3306/java";
             String UserName="root";
-            String PassWord="root1234";
+            String PassWord="Suprit@123";
             Connection con= DriverManager.getConnection(url,UserName,PassWord);
             String query="delete from Students where studId=?";
             PreparedStatement ps= con.prepareStatement(query);
@@ -156,9 +155,9 @@ public class Student extends Person  implements Comparable<Student>{
         }
 
         public static void removeStudents() throws SQLException {
-            String url="jdbc:mysql://localhost:3306/lab5";
+            String url="jdbc:mysql://localhost:3306/java";
             String UserName="root";
-            String PassWord="root1234";
+            String PassWord="Suprit@123";
             Connection con= DriverManager.getConnection(url,UserName,PassWord);
             Statement st=con.createStatement();
             String query="truncate Students";
@@ -170,9 +169,9 @@ public class Student extends Person  implements Comparable<Student>{
         return this.getStudID().compareTo(o.getStudID());
     }
     public static void printDetailsById(String Id) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="select * from Students where studId=?";
         PreparedStatement ps=con.prepareStatement(query);
@@ -189,9 +188,9 @@ public class Student extends Person  implements Comparable<Student>{
         }
     }
     public static void printDetailsByName(String Name) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="select * from Students where name like ?";
         PreparedStatement ps=con.prepareStatement(query);
