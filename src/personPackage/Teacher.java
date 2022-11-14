@@ -77,7 +77,6 @@ public class Teacher extends Person{
          Scanner sc=new Scanner(new File("personPackage/"+file));
          while(sc.hasNextLine()) {
              String[] sr=sc.nextLine().split(",");
-             System.out.println(sr[5]);
              String[] sl = sr[5].split("-");
              int year=Integer.parseInt(sl[2]);
              int month=Integer.parseInt(sl[1]);
