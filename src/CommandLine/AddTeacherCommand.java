@@ -111,9 +111,15 @@ public class AddTeacherCommand {
                 Teacher.addTeacher(teacher);
 
             } catch (Exception e) {
-                System.out.println("Couldn't add the student!");
+                System.out.println("Couldn't add the Teacher!");
             }
             System.exit(0);
+        } else {
+            try {
+                Teacher.addTeachers(args[2]);
+            } catch (Exception e) {
+                System.out.println("Couldn't add the Teacher!");
+            }
         }
     }
 }
