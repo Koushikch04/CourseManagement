@@ -31,7 +31,7 @@ public class Teacher extends Person{
     }
 
     public Teacher() {super();}
-    public Teacher(String name, String gender, LocalDate dob, String teacherID, String deptName, String title, Double salary) {
+    public Teacher(String teacherID, String name, String deptName, String gender, Double salary, LocalDate dob, String title) {
         super(name, gender, dob);
         this.teacherID = teacherID;
         this.departmentName = deptName;
@@ -70,7 +70,7 @@ public class Teacher extends Person{
          String PassWord="Suprit@123";
          Connection con= DriverManager.getConnection(url,UserName,PassWord);
          Statement st=con.createStatement();
-         String query="create table if not exists Teacher  (ID varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(ID))";
+         String query="create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
          st.executeUpdate(query);
          query="insert into Teacher values(?,?,?,?,?,?,?)";
          PreparedStatement ps=con.prepareStatement(query);
@@ -97,7 +97,7 @@ public class Teacher extends Person{
         String UserName="root";
         String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query="create table if not exists Teacher  (ID varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(ID))";
+        String query="create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
         Statement st=con.createStatement();
         st.executeUpdate(query);
         query="insert into Teacher values(?,?,?,?,?,?,?)";
@@ -113,14 +113,24 @@ public class Teacher extends Person{
         System.out.println("Teacher added");
     }
     public static void removeTeacher(String teacherID) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab6";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="root1234";
+        String PassWord="Suprit@123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query="delete from Teacher where ID=?";
+        String query="delete from Teacher where teacherId=?";
         PreparedStatement ps=con.prepareStatement(query);
         ps.setString(1,teacherID);
         ps.executeUpdate();
         System.out.println("Teacher removed successfully");
+    }
+
+    public static void removeTeachers() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Statement st=con.createStatement();
+        String query="truncate Teacher";
+        st.executeUpdate(query);
     }
 }
