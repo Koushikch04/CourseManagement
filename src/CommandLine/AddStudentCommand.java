@@ -63,7 +63,7 @@ public class AddStudentCommand {
         b.setBounds(118, 263, 122, 33);
         fr.getContentPane().add(b);
         JLabel lab = new JLabel("New label");
-        lab.setIcon(new ImageIcon("src/CommandLine/image.png"));
+        lab.setIcon(new ImageIcon("CommandLine/image.png"));
         lab.setBounds(0, 0, 950, 371);
         fr.getContentPane().add(lab);
         fr.getContentPane().setLayout(null);

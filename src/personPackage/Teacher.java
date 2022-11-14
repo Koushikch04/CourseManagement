@@ -65,16 +65,16 @@ public class Teacher extends Person{
     }
 
      public  static  void addTeachers(String file) throws SQLException, FileNotFoundException {
-         String url="jdbc:mysql://localhost:3306/lab8";
+         String url="jdbc:mysql://localhost:3306/java";
          String UserName="root";
-         String PassWord="root1234";
+         String PassWord="Suprit@123";
          Connection con= DriverManager.getConnection(url,UserName,PassWord);
          Statement st=con.createStatement();
          String query="create table if not exists Teacher  (ID varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(ID))";
          st.executeUpdate(query);
          query="insert into Teacher values(?,?,?,?,?,?,?)";
          PreparedStatement ps=con.prepareStatement(query);
-         Scanner sc=new Scanner(new File("src/personPackage/"+file));
+         Scanner sc=new Scanner(new File("personPackage/"+file));
          while(sc.hasNextLine()) {
              String[] sr=sc.nextLine().split(",");
              System.out.println(sr[5]);

@@ -57,7 +57,7 @@ public class Student extends Person  implements Comparable<Student>{
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("personPackage/"+file));
         while(sc.hasNextLine())
         {
             SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
@@ -83,7 +83,10 @@ public class Student extends Person  implements Comparable<Student>{
         String UserName="root";
         String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query="insert into Students values(?,?,?,?,?)";
+        Statement st=con.createStatement();
+        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        st.executeUpdate(query);
+        query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps=con.prepareStatement(query);
         ps.setString(1,student.getStudID());
         ps.setString(2,student.getName());
