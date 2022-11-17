@@ -95,7 +95,7 @@ public class Student extends Person  implements Comparable<Student>{
         ps.executeUpdate();
     }
 
-    public static  void SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static  ArrayList<Student> SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
         String PassWord="Suprit@123";
@@ -110,15 +110,16 @@ public class Student extends Person  implements Comparable<Student>{
             studentList.add(temp);
         }
         Collections.sort(studentList);
-        Iterator it=studentList.iterator();
-        while(it.hasNext())
-        {
-            Student stud= (Student) it.next();
-            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
-        }
+//        Iterator it=studentList.iterator();
+//        while(it.hasNext())
+//        {
+//            Student stud= (Student) it.next();
+//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+//        }
+        return studentList;
     }
 
-    public static  void SortByBranch() throws SQLException {
+    public static  ArrayList<Student> SortByBranch() throws SQLException {
         String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
         String PassWord="Suprit@123";
@@ -134,11 +135,36 @@ public class Student extends Person  implements Comparable<Student>{
         }
         Collections.sort(studentList,new branchCompare());
         Iterator it=studentList.iterator();
-        while(it.hasNext())
+//        while(it.hasNext())
+//        {
+//            Student stud= (Student) it.next();
+//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+//        }
+        return studentList;
+    }
+
+    public static  ArrayList<Student> SortByName() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Statement st= con.createStatement();
+        String query="select * from Students";
+        ArrayList<Student> studentList=new ArrayList<>();
+        ResultSet rs=st.executeQuery(query);
+        while(rs.next())
         {
-            Student stud= (Student) it.next();
-            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+            studentList.add(temp);
         }
+        Collections.sort(studentList,new nameCompare());
+        Iterator it=studentList.iterator();
+//        while(it.hasNext())
+//        {
+//            Student stud= (Student) it.next();
+//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+//        }
+        return studentList;
     }
 
     public static void removeStudent(String studId) throws SQLException {
@@ -203,7 +229,11 @@ public class Student extends Person  implements Comparable<Student>{
                 System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " +rs.getString(4) + rs.getString(5));
             }
         }
+
     }
+
+
+
 
 }
 
@@ -215,3 +245,13 @@ class branchCompare implements  Comparator<Student>
     }
 }
 
+
+class nameCompare implements  Comparator<Student>
+{
+
+
+    @Override
+    public int compare(Student o1, Student o2) {
+        return o1.getName().compareTo(o2.getName());
+    }
+}

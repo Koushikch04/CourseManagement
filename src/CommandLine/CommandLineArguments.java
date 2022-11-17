@@ -2,7 +2,6 @@ package CommandLine;
 
 public class CommandLineArguments {
 
-
     public String toString() {
         String s = "";
         s += "-add <person>                                 : For adding a particular person(Student or Teacher) or course!\n";
