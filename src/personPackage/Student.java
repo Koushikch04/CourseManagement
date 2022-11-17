@@ -39,6 +39,8 @@ public class Student extends Person  implements Comparable<Student>{
         this.branch = branch;
     }
 
+
+
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
         Period period = Period.between(super.getDob(), curDate);
@@ -120,9 +122,9 @@ public class Student extends Person  implements Comparable<Student>{
     }
 
     public static  ArrayList<Student> SortByBranch() throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st= con.createStatement();
         String query="select * from Students";
@@ -158,6 +160,30 @@ public class Student extends Person  implements Comparable<Student>{
             studentList.add(temp);
         }
         Collections.sort(studentList,new nameCompare());
+        Iterator it=studentList.iterator();
+//        while(it.hasNext())
+//        {
+//            Student stud= (Student) it.next();
+//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+//        }
+        return studentList;
+    }
+
+    public static  ArrayList<Student> SortByDob() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/lab04";
+        String UserName="root";
+        String PassWord="root1234";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Statement st= con.createStatement();
+        String query="select * from Students";
+        ArrayList<Student> studentList=new ArrayList<>();
+        ResultSet rs=st.executeQuery(query);
+        while(rs.next())
+        {
+            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+            studentList.add(temp);
+        }
+        Collections.sort(studentList,new dobCompare());
         Iterator it=studentList.iterator();
 //        while(it.hasNext())
 //        {
@@ -212,9 +238,9 @@ public class Student extends Person  implements Comparable<Student>{
         }
     }
     public static void printDetailsByName(String Name) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="select * from Students where name like ?";
         PreparedStatement ps=con.prepareStatement(query);
@@ -231,9 +257,6 @@ public class Student extends Person  implements Comparable<Student>{
         }
 
     }
-
-
-
 
 }
 
@@ -253,5 +276,14 @@ class nameCompare implements  Comparator<Student>
     @Override
     public int compare(Student o1, Student o2) {
         return o1.getName().compareTo(o2.getName());
+    }
+}
+
+class dobCompare implements  Comparator<Student>
+{
+
+    @Override
+    public int compare(Student o1, Student o2) {
+        return o1.getDob().compareTo(o2.getDob());
     }
 }

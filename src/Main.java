@@ -3,6 +3,7 @@ import CommandLine.*;
 import personPackage.Student;
 import personPackage.Teacher;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,12 +21,21 @@ public class Main {
 //        } else if(args[1].equals("Teachers")) {
 //            TeachersCommands.connect(args);
 //        }
-        ArrayList<Student> ar = Student.SortByBranch();
-        Iterator<Student> it=ar.iterator();
+//        ArrayList<Student> ar = Student.SortByDob();
+//        Iterator<Student> it=ar.iterator();
+//        while(it.hasNext())
+//        {
+//            Student stud= (Student) it.next();
+//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+//        }
+
+
+        ArrayList<Teacher> al=Teacher.SortByDob();
+        Iterator<Teacher> it=al.iterator();
         while(it.hasNext())
         {
-            Student stud= (Student) it.next();
-            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
+            Teacher t1=it.next();
+            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
         }
     }
 }
