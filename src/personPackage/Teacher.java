@@ -3,11 +3,12 @@ import  Courses.courses;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Scanner;
+import java.util.*;
 
-public class Teacher extends Person{
+public class Teacher extends Person implements  Comparable<Teacher>{
     private String teacherID;
     private String departmentName;
 
@@ -133,4 +134,129 @@ public class Teacher extends Person{
         String query="truncate Teacher";
         st.executeUpdate(query);
     }
+
+    public static ArrayList<Teacher> SortByName() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="select * from teacher";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);
+        ArrayList<Teacher> teach=new ArrayList<>();
+        while(rs.next())
+        {
+                  Teacher temp=new Teacher(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getDouble(5),rs.getDate(6).toLocalDate(),rs.getString(7) );
+                  teach.add(temp);
+        }
+        Collections.sort(teach);
+//        Iterator<Teacher> it=teach.iterator();
+//        while(it.hasNext())
+//        {
+//            Teacher t1=it.next();
+//            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
+//        }
+        return teach;
+    }
+
+
+    public static ArrayList<Teacher> SortById() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="select * from teacher";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);
+        ArrayList<Teacher> teach=new ArrayList<>();
+        while(rs.next())
+        {
+            Teacher temp=new Teacher(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getDouble(5),rs.getDate(6).toLocalDate(),rs.getString(7) );
+            teach.add(temp);
+        }
+        Collections.sort(teach,new CompareById());
+//        Iterator<Teacher> it=teach.iterator();
+//        while(it.hasNext())
+//        {
+//            Teacher t1=it.next();
+//            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
+//        }
+        return teach;
+    }
+    public static ArrayList<Teacher> SortByBranch() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="select * from teacher";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);
+        ArrayList<Teacher> teach=new ArrayList<>();
+        while(rs.next())
+        {
+            Teacher temp=new Teacher(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getDouble(5),rs.getDate(6).toLocalDate(),rs.getString(7) );
+            teach.add(temp);
+        }
+        Collections.sort(teach,new CompareByName());
+//        Iterator<Teacher> it=teach.iterator();
+//        while(it.hasNext())
+//        {
+//            Teacher t1=it.next();
+//            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
+//        }
+        return teach;
+    }
+
+    public static ArrayList<Teacher> SortBySalary() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/java";
+        String UserName="root";
+        String PassWord="Suprit@123";
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query="select * from teacher";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);
+        ArrayList<Teacher> teach=new ArrayList<>();
+        while(rs.next())
+        {
+            Teacher temp=new Teacher(rs.getString(1),rs.getString(2), rs.getString(3),rs.getString(4),rs.getDouble(5),rs.getDate(6).toLocalDate(),rs.getString(7) );
+            teach.add(temp);
+        }
+        Collections.sort(teach,new CompareBySalary());
+//        Iterator<Teacher> it=teach.iterator();
+//        while(it.hasNext())
+//        {
+//            Teacher t1=it.next();
+//            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
+//        }
+        return teach;
+    }
+    @Override
+    public int compareTo(Teacher o) {
+        return this.getName().compareTo(o.getName());
+    }
 }
+class CompareById implements Comparator<Teacher> {
+    @Override
+    public int compare(Teacher o1, Teacher o2) {
+        return o1.getTeacherID().compareTo(o2.getTeacherID());
+    }
+}
+
+class CompareByName implements Comparator<Teacher>
+{
+
+    @Override
+    public int compare(Teacher o1, Teacher o2) {
+        return o1.getDepartmentName().compareTo(o2.getDepartmentName());
+    }
+}
+
+class CompareBySalary implements  Comparator<Teacher>
+{
+
+    @Override
+    public int compare(Teacher o1, Teacher o2) {
+        return o1.getSalary().compareTo(o2.getSalary());
+    }
+}
+
