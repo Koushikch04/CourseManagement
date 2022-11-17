@@ -98,7 +98,7 @@ public class Student extends Person  implements Comparable<Student>{
     public static  void SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root123";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st= con.createStatement();
         String query="select * from Students";
