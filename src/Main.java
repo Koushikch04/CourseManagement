@@ -11,16 +11,16 @@ import java.util.Iterator;
 public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-//        if(args.length==1 && args[0].equals("-h")) {
-//            CommandLineArguments commandLineArguments = new CommandLineArguments();
-//            System.out.println(commandLineArguments);
-//            return;
-//        }
-//        if(args[1].equals("Students")) {
-//            StudentsCommands.connect(args);
-//        } else if(args[1].equals("Teachers")) {
-//            TeachersCommands.connect(args);
-//        }
+        if(args.length==1 && args[0].equals("-h")) {
+            CommandLineArguments commandLineArguments = new CommandLineArguments();
+            System.out.println(commandLineArguments);
+            return;
+        }
+        if(args[1].equals("Students")) {
+            StudentsCommands.connect(args);
+        } else if(args[1].equals("Teachers")) {
+            TeachersCommands.connect(args);
+        }
 //        ArrayList<Student> ar = Student.SortByDob();
 //        Iterator<Student> it=ar.iterator();
 //        while(it.hasNext())
@@ -30,12 +30,14 @@ public class Main {
 //        }
 
 
-        ArrayList<Teacher> al=Teacher.SortByDob();
-        Iterator<Teacher> it=al.iterator();
-        while(it.hasNext())
-        {
-            Teacher t1=it.next();
-            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
-        }
+
+
+//        ArrayList<Teacher> al=Teacher.SortByDob();
+//        Iterator<Teacher> it=al.iterator();
+//        while(it.hasNext())
+//        {
+//            Teacher t1=it.next();
+//            System.out.println(t1.getTeacherID()+" "+t1.getName()+" "+t1.getDepartmentName()+" "+t1.getGender()+" "+t1.getDob());
+//        }
     }
 }
