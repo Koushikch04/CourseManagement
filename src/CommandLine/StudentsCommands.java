@@ -175,13 +175,13 @@ public class StudentsCommands {
             if (args.length == 4) {
                 if (args[3].equals("studId")) {
                     try {
-                        Student.SortById();
+                        Student.Sort("studId",1);
                     } catch (Exception e) {
                         System.out.println(e);
                     }
                 } else if(args[3].equals("deptName")) {
                     try {
-                        Student.SortByBranch();
+                        Student.Sort("deptName",0);
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -190,7 +190,7 @@ public class StudentsCommands {
         } else if(args[0].equals("-search")) {
             if(args[2].equals("studId")) {
                 try {
-                    Student.printDetailsById(args[3]);
+                    Student.Search("studId",args[3]);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
@@ -201,8 +201,8 @@ public class StudentsCommands {
                     for(int i = 4; i<n; i++) tempName = tempName + " " + args[i];
                 }
                 try {
-                    Student.printDetailsByName(tempName);
-                } catch (Exception e) {
+                    Student.Search("name",args[4]);
+                                    } catch (Exception e) {
                     System.out.println(e);
                 }
             }
