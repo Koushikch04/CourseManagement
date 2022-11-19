@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class StudentsCommands {
     private static void addStudentGUI(Student student) {
@@ -147,6 +148,42 @@ public class StudentsCommands {
         });
         fr.setVisible(true);
     }
+
+    public static void printStudentDetails(ArrayList<Student> s) {
+        JFrame f = new JFrame("STUDENT DETAILS");
+        JLabel lblNewLabel = new JLabel("STUDENT DETAILS");
+        lblNewLabel.setFont(new Font("Wide Latin", Font.BOLD, 27));
+        lblNewLabel.setBounds(205, 10, 536, 66);
+
+        f=new JFrame("                                                        STUDENT DETAILS");
+        int n = s.size();
+        String data[][]= new String[n][6];
+        for(int i = 0; i<n; i++) {
+            data[i][0] = Integer.toString(i+1);
+            data[i][1] = s.get(i).getStudID();
+            data[i][2] = s.get(i).getName();
+            data[i][3] = s.get(i).getBranch();
+            data[i][4] = s.get(i).getDob().toString();
+            data[i][5] = s.get(i).getGender();
+
+        }
+        int si = 470;
+        String column[]={"S. NO","STUDENT_ID","NAME","BRANCH","DOB","GENDER"};
+        JTable jt=new JTable(data,column);
+        jt.setBounds(230,100,800,si);
+        jt.getColumnModel().getColumn(0).setMaxWidth(50);
+
+        jt.getColumnModel().getColumn(2).setPreferredWidth(250);
+        jt.getColumnModel().getColumn(3).setMaxWidth(100);
+        jt.getColumnModel().getColumn(4).setPreferredWidth(30);
+        jt.getColumnModel().getColumn(5).setMaxWidth(100);
+        JScrollPane sp=new JScrollPane(jt);
+        f.getContentPane().add(sp, BorderLayout.NORTH);
+        f.setBounds(230,100,800,si);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+    }
     private static void add(String[] args) {
         if(args.length==2) {
             Student stud = new Student();
@@ -171,41 +208,6 @@ public class StudentsCommands {
     public static void connect(String args[]) {
         if (args[0].equals("-add")) {
             add(args);
-        } else if (args[0].equals("-details")) {
-            if (args.length == 4) {
-                if (args[3].equals("studId")) {
-                    try {
-                        Student.Sort("studId",1);
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                } else if(args[3].equals("deptName")) {
-                    try {
-                        Student.Sort("deptName",0);
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-                }
-            }
-        } else if(args[0].equals("-search")) {
-            if(args[2].equals("studId")) {
-                try {
-                    Student.Search("studId",args[3]);
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            } else if(args[2].equals("name")) {
-                String tempName = args[3];
-                if(args.length>4) {
-                    int n = args.length;
-                    for(int i = 4; i<n; i++) tempName = tempName + " " + args[i];
-                }
-                try {
-                    Student.Search("name",args[4]);
-                                    } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
         } else if(args[0].equals("-rmv")) {
             if(args.length==2) {
                 try {
@@ -219,6 +221,33 @@ public class StudentsCommands {
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+            }
+        } else if(args[0].equals("-sort") || args[0].equals("-details")) {
+            int x = 0;
+            if(args.length > 3 && args[3].equals("desc")) x=1;
+            try {
+                ArrayList<Student> students;
+                if(args[0].equals("-details")) {
+                    students = Student.Sort("studId", 0);
+                } else {
+                    students = Student.Sort(args[2], x);
+                }
+                printStudentDetails(students);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } else if(args[0].equals("-search")) {
+            try {
+                ArrayList<Student> students = Student.Search(args[2], args[3]);
+                printStudentDetails(students);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } else if(args[0].equals("-update")) {
+            try {
+                Student.update(args[2], args[3], args[4]);
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
     }

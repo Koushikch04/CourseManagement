@@ -9,7 +9,7 @@ public class CommandLineArguments {
         s += "-rmv <person>                                 : For removing details of all the person(Student or Teacher) or course!\n";
         s += "-rmv <person> <id>                            : For removing the person(Student or Teacher) or course data with the following id!\n";
         s += "-details <person>                             : For displaying the details of all the person(Student or Teacher) or courses!\n";
-        s += "-details <person> sort <fieldName>            : For displaying the details of all person(Student or Teacher) or course sorted by the\n";
+        s += "-sort <person> <fieldName> <order>            : For displaying the details of all person(Student or Teacher) or course sorted by the\n";
         s += "                                                given field name\n";
         s += "-search <person> <fieldName> <fieldValue>     : For searching and printing(if found) the details of the given person(Student and Teacher)\n";
         s += "                                                with the same fieldValue\n";

@@ -1,5 +1,5 @@
 package personPackage;
-import  Courses.courses;
+import AdditionalComponents.JdbcDetails;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -68,9 +68,9 @@ public class Teacher extends Person{
     }
 
     public static void addTeachers(String file) throws SQLException, FileNotFoundException {
-        String url = "jdbc:mysql://localhost:3306/java";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+ JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         Statement st = con.createStatement();
         String query = "create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
@@ -97,9 +97,9 @@ public class Teacher extends Person{
     }
 
     public static void addTeacher(Teacher teacher) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/java";
-        String UserName = "root";
-        String PassWord = "Suprit@123";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query = "create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
         Statement st = con.createStatement();
@@ -118,9 +118,9 @@ public class Teacher extends Person{
     }
 
     public static void removeTeacher(String teacherID) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/java";
-        String UserName = "root";
-        String PassWord = "Suprit@123";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query = "delete from Teacher where teacherId=?";
         PreparedStatement ps = con.prepareStatement(query);
@@ -130,9 +130,9 @@ public class Teacher extends Person{
     }
 
     public static void removeTeachers() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/java";
-        String UserName = "root";
-        String PassWord = "Suprit@123";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         Statement st = con.createStatement();
         String query = "truncate Teacher";
@@ -141,9 +141,9 @@ public class Teacher extends Person{
 
 
     public static ArrayList<Teacher> Sort(String sortField,int order) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/lab5";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query = "select * from teacher order by "+sortField;
         if(order==1)
@@ -161,9 +161,9 @@ public class Teacher extends Person{
 
 
     public static ArrayList<Teacher> Search(String fieldName,String Search) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/lab5";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query = "select * from teacher where " +fieldName+" like "+"'%"+Search+"%'";
         Statement st = con.createStatement();
@@ -176,19 +176,12 @@ public class Teacher extends Person{
         return teach;
     }
 
-    public static void Update(String Id,String field,String newValue) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab5";
-        String UserName="root";
-        String PassWord="root1234";
+    public static void update(String Id,String field,String newValue) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-//        String query=" update students set ?=\"?\" where studId=\"?\"";
-//        PreparedStatement ps=con.prepareStatement(query);
-//        ps.setString(1,Field);
-//        ps.setString(2,newValue);
-//        ps.setString(3,Id);
-//        ps.executeUpdate();
-
-        String query="update teacher set "+field+"=\""+newValue+"\" where ID=\""+Id+"\"";
+        String query="update teacher set "+field+"=\""+newValue+"\" where teacherId=\""+Id+"\"";
         Statement st=con.createStatement();
         st.executeUpdate(query);
     }
