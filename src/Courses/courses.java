@@ -1,4 +1,6 @@
 package Courses;
+import AdditionalComponents.JdbcDetails;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -64,9 +66,9 @@ public class courses {
     }
 
     public static void addCourses(String file) throws SQLException, FileNotFoundException {
-        String url = "jdbc:mysql://localhost:3306/lab4";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+ JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query="create table if not exists courses(courseId varchar(30),title varchar(30),  abbreviation varchar(30),deptName varchar(30), credits int,primary key(courseId))";
         Statement st=con.createStatement();
@@ -86,9 +88,9 @@ public class courses {
         }
     }
     public static void addCourse(courses course) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/lab3";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query="create table if not exists courses(courseId varchar(30),title varchar(30),  abbreviation varchar(30),deptName varchar(30), credits int,primary key(courseId))";
         Statement st=con.createStatement();
@@ -103,9 +105,9 @@ public class courses {
         ps.executeUpdate();
     }
     public static void removeCourse(String courseId) throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/lab3";
-        String UserName = "root";
-        String PassWord = "root1234";
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query="delete from courses where courseId=?";
         PreparedStatement ps=con.prepareStatement(query);

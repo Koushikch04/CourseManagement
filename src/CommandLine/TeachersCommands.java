@@ -1,13 +1,17 @@
 package CommandLine;
 
 import com.mysql.cj.exceptions.StreamingNotifiable;
+import personPackage.Student;
 import personPackage.Teacher;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class TeachersCommands {
     public static void addTeacherGUI(Teacher teacher) {
@@ -103,6 +107,42 @@ public class TeachersCommands {
         });
         fr.setVisible(true);
     }
+
+    private static void printTeacherDetails(ArrayList<Teacher> s) {
+        JFrame f = new JFrame("Teacher DETAILS");
+        JLabel lblNewLabel = new JLabel("Teacher DETAILS");
+        lblNewLabel.setFont(new Font("Wide Latin", Font.BOLD, 27));
+        lblNewLabel.setBounds(205, 10, 536, 66);
+
+        f=new JFrame("                                                        TEACHER DETAILS");
+        int n = s.size();
+        String data[][]= new String[n][7];
+        for(int i = 0; i<n; i++) {
+            data[i][0] = Integer.toString(i+1);
+            data[i][1] = s.get(i).getTeacherID();
+            data[i][2] = s.get(i).getName();
+            data[i][3] = s.get(i).getDepartmentName();
+            data[i][4] = s.get(i).getDob().toString();
+            data[i][5] = s.get(i).getGender();
+            data[i][6] = Double.toString(s.get(i).getSalary());
+        }
+        int si = 470;
+        String column[]={"S. NO","TEACHER_ID","NAME","DEPT_NAME","DOB","GENDER","SALARY"};
+        JTable jt=new JTable(data,column);
+        jt.setBounds(230,100,800,si);
+        jt.getColumnModel().getColumn(0).setPreferredWidth(50);
+        jt.getColumnModel().getColumn(2).setPreferredWidth(200);
+        jt.getColumnModel().getColumn(3).setPreferredWidth(80);
+        jt.getColumnModel().getColumn(4).setPreferredWidth(80);
+        jt.getColumnModel().getColumn(5).setPreferredWidth(100);
+        jt.getColumnModel().getColumn(6).setPreferredWidth(100);
+        JScrollPane sp=new JScrollPane(jt);
+        f.getContentPane().add(sp, BorderLayout.NORTH);
+        f.setBounds(230,100,800,si);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
+    }
     public static void add(String[] args) {
         if(args.length==2) {
             Teacher teacher = new Teacher();
@@ -140,6 +180,33 @@ public class TeachersCommands {
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+            }
+        } else if(args[0].equals("-sort") || args[0].equals("-details")) {
+            int x = 0;
+            if(args.length > 3 && args[3].equals("desc")) x=1;
+            try {
+                ArrayList<Teacher> teachers;
+                if(args[0].equals("-details")) {
+                    teachers = Teacher.Sort("teacherId", 0);
+                } else {
+                    teachers = Teacher.Sort(args[2], x);
+                }
+                printTeacherDetails(teachers);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } else if(args[0].equals("-search")) {
+            try {
+                ArrayList<Teacher> teachers = Teacher.Search(args[2], args[3]);
+                printTeacherDetails(teachers);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } else if(args[0].equals("-update")) {
+            try {
+                Teacher.update(args[2], args[3], args[4]);
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
     }
