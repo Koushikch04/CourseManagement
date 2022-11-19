@@ -158,8 +158,6 @@ public class Teacher extends Person{
         return teach;
     }
 
-
-
     public static ArrayList<Teacher> Search(String fieldName,String Search) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
@@ -185,4 +183,20 @@ public class Teacher extends Person{
         Statement st=con.createStatement();
         st.executeUpdate(query);
     }
+
+    public static int authentication(String id, String dob) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        String query = "select dob from teacher where teacherId=\"" + id + "\"";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        if(rs.next())  {
+            String s = rs.getString(1).replace("-","");
+            if(dob.equals(s)) return 1;
+        }
+        return 0;
+    }
+
 }
