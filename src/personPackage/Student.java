@@ -1,6 +1,8 @@
 package personPackage;
-import com.mysql.cj.protocol.Resultset;
 
+import org.w3c.dom.css.CSSStyleDeclaration;
+
+import javax.lang.model.type.PrimitiveType;
 import java.sql.Date;
 import java.util.*;
 import java.io.File;
@@ -10,7 +12,7 @@ import java.time.*;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class Student extends Person  implements Comparable<Student>{
+public class Student extends Person {
     private String studID;
     private String branch;
 
@@ -38,6 +40,8 @@ public class Student extends Person  implements Comparable<Student>{
     public void setBranch(String branch) {
         this.branch = branch;
     }
+
+
 
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
@@ -95,87 +99,74 @@ public class Student extends Person  implements Comparable<Student>{
         ps.executeUpdate();
     }
 
-    public static  ArrayList<Student> SortById() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        String url="jdbc:mysql://localhost:3306/java";
+    public static  ArrayList<Student> Sort( String sortField,int order) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        Statement st= con.createStatement();
-        String query="select * from Students";
-        ArrayList<Student> studentList=new ArrayList<>();
-        ResultSet rs=st.executeQuery(query);
-        while(rs.next())
-        {
-            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
-            studentList.add(temp);
+
+        String query="select * from students order by "+sortField;
+        if(order==1) {
+            query+=" desc";
         }
-        Collections.sort(studentList);
-//        Iterator it=studentList.iterator();
-//        while(it.hasNext())
-//        {
-//            Student stud= (Student) it.next();
-//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
-//        }
-        return studentList;
+        PreparedStatement ps=con.prepareStatement(query);
+        ResultSet rs;
+        ArrayList<Student> list = null;
+        try {
+             rs = ps.executeQuery();
+             list=new ArrayList<>();
+            while(rs.next())
+            {
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+                list.add(temp);
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("FieldName "+sortField+" is not valid");
+        }
+     return list;
     }
 
-    public static  ArrayList<Student> SortByBranch() throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
+
+    public static  ArrayList<Student> Search( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        Statement st= con.createStatement();
-        String query="select * from Students";
-        ArrayList<Student> studentList=new ArrayList<>();
-        ResultSet rs=st.executeQuery(query);
-        while(rs.next())
-        {
-            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
-            studentList.add(temp);
+
+        String query = "select * from students where " +fieldName+" like "+"'%"+Search+"%'";
+        PreparedStatement ps=con.prepareStatement(query);
+        ResultSet rs;
+        ArrayList<Student> list = null;
+        try {
+            rs = ps.executeQuery();
+            list=new ArrayList<>();
+            while(rs.next())
+            {
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+                list.add(temp);
+            }
         }
-        Collections.sort(studentList,new branchCompare());
-        Iterator it=studentList.iterator();
-//        while(it.hasNext())
-//        {
-//            Student stud= (Student) it.next();
-//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
-//        }
-        return studentList;
+        catch (SQLException e)
+        {
+            System.out.println("FieldName "+fieldName+" is not valid");
+        }
+        return list;
     }
 
-    public static  ArrayList<Student> SortByName() throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
-        String UserName="root";
-        String PassWord="Suprit@123";
-        Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        Statement st= con.createStatement();
-        String query="select * from Students";
-        ArrayList<Student> studentList=new ArrayList<>();
-        ResultSet rs=st.executeQuery(query);
-        while(rs.next())
-        {
-            Student temp=new Student(rs.getString(1),rs.getString(2), rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
-            studentList.add(temp);
-        }
-        Collections.sort(studentList,new nameCompare());
-        Iterator it=studentList.iterator();
-//        while(it.hasNext())
-//        {
-//            Student stud= (Student) it.next();
-//            System.out.println(stud.getStudID()+" "+stud.getName()+" "+stud.getDob()+" "+stud.getBranch()+" "+stud.getGender());
-//        }
-        return studentList;
-    }
+
 
     public static void removeStudent(String studId) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="delete from Students where studId=?";
         PreparedStatement ps= con.prepareStatement(query);
         ps.setString(1,studId);
         ps.executeUpdate();
+        System.out.println("Student removed successfully");
     }
 
     public static void removeStudents() throws SQLException {
@@ -188,70 +179,26 @@ public class Student extends Person  implements Comparable<Student>{
         st.executeUpdate(query);
     }
 
-    @Override
-    public int compareTo(Student o) {
-        return this.getStudID().compareTo(o.getStudID());
-    }
-    public static void printDetailsById(String Id) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
+    public static void update(String Id,String Field,String newValue) throws Exception {
+//      ArrayList<Student> list=Search("studId","Id");
+        String url="jdbc:mysql://localhost:3306/lab04";
         String UserName="root";
-        String PassWord="Suprit@123";
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query="select * from Students where studId=?";
-        PreparedStatement ps=con.prepareStatement(query);
-        ps.setString(1,Id);
-        ResultSet rs= ps.executeQuery();
-        ResultSet rs1=rs;
-        if(rs.next()==false)
-            System.out.println("Student Not Found");
-        else {
-            rs= ps.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + rs.getString(4) + rs.getString(5));
-            }
-        }
+//        String query=" update students set ?=\"?\" where studId=\"?\"";
+//        PreparedStatement ps=con.prepareStatement(query);
+//        ps.setString(1,Field);
+//        ps.setString(2,newValue);
+//        ps.setString(3,Id);
+//        ps.executeUpdate();
+
+        String query="update students set "+Field+"=\""+newValue+"\" where studId=\""+Id+"\"";
+      Statement st=con.createStatement();
+      st.executeUpdate(query);
     }
-    public static void printDetailsByName(String Name) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/java";
-        String UserName="root";
-        String PassWord="Suprit@123";
-        Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query="select * from Students where name like ?";
-        PreparedStatement ps=con.prepareStatement(query);
-        ps.setString(1,"%"+Name+"%");
-        ResultSet rs= ps.executeQuery();
-        ResultSet rs1=rs;
-        if(rs.next()==false)
-            System.out.println("Student Not Found");
-        else {
-            rs= ps.executeQuery();
-            while (rs.next()) {
-                System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " +rs.getString(4) + rs.getString(5));
-            }
-        }
-
-    }
-
-
 
 
 }
 
-class branchCompare implements  Comparator<Student>
-{
-    @Override
-    public int compare(Student o1, Student o2) {
-      return  o1.getBranch().compareTo(o2.getBranch());
-    }
-}
 
 
-class nameCompare implements  Comparator<Student>
-{
-
-
-    @Override
-    public int compare(Student o1, Student o2) {
-        return o1.getName().compareTo(o2.getName());
-    }
-}
