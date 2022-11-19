@@ -68,7 +68,7 @@ public class Teacher extends Person implements  Comparable<Teacher>{
      public  static  void addTeachers(String file) throws SQLException, FileNotFoundException {
          String url="jdbc:mysql://localhost:3306/java";
          String UserName="root";
-         String PassWord="Suprit@123";
+         String PassWord="root1234";
          Connection con= DriverManager.getConnection(url,UserName,PassWord);
          Statement st=con.createStatement();
          String query="create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
@@ -161,7 +161,7 @@ public class Teacher extends Person implements  Comparable<Teacher>{
 
 
     public static ArrayList<Teacher> SortByDob() throws SQLException {
-        String url="jdbc:mysql://localhost:3306/lab5";
+        String url="jdbc:mysql://localhost:3306/java";
         String UserName="root";
         String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);

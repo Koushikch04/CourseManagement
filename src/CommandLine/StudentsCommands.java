@@ -10,12 +10,10 @@ import java.time.LocalDate;
 public class StudentsCommands {
     private static void addStudentGUI(Student student) {
         final JTextField f1 = new JTextField();
-        final JTextField f2 = new JTextField();
         final JTextField f3 = new JTextField("YY-MM-DD FORMAT");
-        final JTextField f4 = new JTextField();
         final JTextField f5 = new JTextField();
 
-        JFrame f = new JFrame();
+        final JFrame f= new JFrame();
         final JDialog fr = new JDialog(f, "Add Student");
         fr.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         JLabel l1 = new JLabel();
@@ -49,36 +47,100 @@ public class StudentsCommands {
         l6.setBounds(69,22,215,27);
         fr.getContentPane().add(l6);
         f1.setBounds(182, 73, 150, 20);
-        f2.setBounds(182, 105, 150, 20);
         f3.setBounds(182, 138, 150, 20);
-        f4.setBounds(182, 175, 150, 20);
         f5.setBounds(182, 212, 150, 20);
 
         fr.getContentPane().add(f1, BorderLayout.NORTH);
-        fr.getContentPane().add(f2);
         fr.getContentPane().add(f3);
-        fr.getContentPane().add(f4);
         fr.getContentPane().add(f5);
         JButton b = new JButton("SUBMIT");
         b.setBounds(118, 263, 122, 33);
         fr.getContentPane().add(b);
+
+        fr.getContentPane().setLayout(null);
+
+        final JRadioButton rdbtnNewRadioButton = new JRadioButton("Male");
+        rdbtnNewRadioButton.setBounds(181, 104, 59, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton);
+
+
+        final JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Female");
+        rdbtnNewRadioButton_1.setBounds(250, 104, 71, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1);
+
+        final JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("CSE");
+        rdbtnNewRadioButton_2.setBounds(182, 174, 58, 20);
+        fr.getContentPane().add(rdbtnNewRadioButton_2);
+
+        final JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("ECE");
+        rdbtnNewRadioButton_3.setBounds(250, 174, 71, 20);
+        fr.getContentPane().add(rdbtnNewRadioButton_3);
+
+        final JRadioButton rdbtnNewRadioButton_4 = new JRadioButton("Other");
+        rdbtnNewRadioButton_4.setBounds(323, 104, 103, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_4);
+
+        rdbtnNewRadioButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1.setSelected(false);
+                rdbtnNewRadioButton_4.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton.setSelected(false);
+                rdbtnNewRadioButton_4.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1.setSelected(false);
+                rdbtnNewRadioButton.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_3.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_2.setSelected(false);
+            }
+
+        });
         JLabel lab = new JLabel("New label");
         lab.setIcon(new ImageIcon("CommandLine/image.png"));
         lab.setBounds(0, 0, 950, 371);
         fr.getContentPane().add(lab);
-        fr.getContentPane().setLayout(null);
 
-        String ans = "true";
         fr.setSize(950,371);
 
 
         b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 student.setName(f1.getText());
-                student.setGender(f2.getText());
+                if (rdbtnNewRadioButton.isSelected()) {
+                    student.setGender("Male");
+                }
+                else if (rdbtnNewRadioButton_1.isSelected()){
+                    student.setGender("Female");
+                }
+                if (rdbtnNewRadioButton_2.isSelected()) {
+                    student.setBranch("CSE");
+                }
+                else if (rdbtnNewRadioButton_3.isSelected()) {
+                    student.setBranch("ECE");
+                }
+
+
                 LocalDate dob = LocalDate.parse(f3.getText());
                 student.setDob(dob);
-                student.setBranch(f4.getText());
+
                 student.setStudID(f5.getText());
                 fr.dispose();
             }
