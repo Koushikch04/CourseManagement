@@ -2,6 +2,7 @@ package personPackage;
 
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Date;
+import AdditionalComponents.Message;
 
 import java.util.*;
 import java.io.File;
@@ -55,7 +56,7 @@ public class Student extends Person {
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
-        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        String query="create table if not exists Students(studId varchar(30) NOT NULL,name varchar(100) NOT NULL, deptName varchar(30) NOT NULL,dob Date,gender varchar(10) NOT NULL,primary key(studId));";
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
@@ -85,7 +86,7 @@ public class Student extends Person {
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
-        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        String query="create table if not exists Students(studId varchar(30) NOT NULL,name varchar(100) NOT NULL, deptName varchar(30) NOT NULL,dob Date,gender varchar(10) NOT NULL,primary key(studId));";
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps=con.prepareStatement(query);
@@ -142,6 +143,7 @@ public class Student extends Person {
         try {
             rs = ps.executeQuery();
             list=new ArrayList<>();
+            if(list.size()==0) Message.noRecords();
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
@@ -151,7 +153,7 @@ public class Student extends Person {
         }
         catch (SQLException e)
         {
-            System.out.println("FieldName "+fieldName+" is not valid");
+            Message.noRecords();
         }
         con.close();
         return list;
@@ -166,8 +168,11 @@ public class Student extends Person {
         String query="delete from Students where studId=?";
         PreparedStatement ps= con.prepareStatement(query);
         ps.setString(1,studId);
-        ps.executeUpdate();
-        System.out.println("Student removed successfully");
+        int x = ps.executeUpdate();
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
         con.close();
     }
 
@@ -179,9 +184,10 @@ public class Student extends Person {
         Statement st=con.createStatement();
         String query="truncate Students";
         st.executeUpdate(query);
+        con.close();
     }
 
-    public static void update(String Id,String Field,String newValue) throws Exception {
+    public static void update(String Id,String Field,String newValue) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -189,7 +195,11 @@ public class Student extends Person {
 
         String query="update students set "+Field+"=\""+newValue+"\" where studId=\""+Id+"\"";
         Statement st=con.createStatement();
-        st.executeUpdate(query);
+        int x = st.executeUpdate(query);
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
         con.close();
     }
 

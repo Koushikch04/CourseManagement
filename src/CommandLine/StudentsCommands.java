@@ -1,12 +1,16 @@
 package CommandLine;
 import AdditionalComponents.Error;
 import AdditionalComponents.Login;
+import AdditionalComponents.Message;
+import com.mysql.cj.x.protobuf.Mysqlx;
 import personPackage.*;
 import AdditionalComponents.Date;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.security.spec.ECField;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -127,6 +131,7 @@ public class StudentsCommands {
         b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 student.setName(f1.getText());
+                System.out.println(student.getName());
                 if (rdbtnNewRadioButton.isSelected()) {
                     student.setGender("Male");
                 }
@@ -141,10 +146,12 @@ public class StudentsCommands {
                 else if (rdbtnNewRadioButton_3.isSelected()) {
                     student.setBranch("ECE");
                 }
-
-
-                LocalDate dob = LocalDate.parse(f3.getText());
-                student.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
+                try {
+                    LocalDate dob = LocalDate.parse(f3.getText());
+                    student.setDob(new Date(dob.getYear(), (short) dob.getMonthValue(), (short) dob.getDayOfMonth()));
+                } catch (Exception error) {
+                    Error.dateError();
+                }
 
                 student.setStudID(f5.getText());
                 fr.dispose();
@@ -198,22 +205,20 @@ public class StudentsCommands {
                 addStudentGUI(stud);
                 try {
                     Student.addStudent(stud);
-
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.allFields();
                 }
             } else if (args.length == 3) {
                 try {
                     Student.addStudents(args[2]);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.errorMsg(e.toString());
                 }
-
             }
+            Message.added();
         } else {
             Error.loginFailed();
         }
-        System.exit(0);
     }
 
     public static void connect(String args[]) {
@@ -229,19 +234,19 @@ public class StudentsCommands {
                     try {
                         Student.removeStudents();
                     } catch (Exception e) {
-                        System.out.println(e);
+                        Error.errorMsg(e.toString());
                     }
                 } else {
                     try {
                         Student.removeStudent(args[2]);
                     } catch (Exception e) {
-                        System.out.println(e);
+                        Error.errorMsg(e.toString());
                     }
                 }
+                Message.removed();
             } else {
-                System.out.println("Error");
+                Error.loginFailed();
             }
-            System.exit(0);
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
             int x = 0;
             if(args.length > 3 && args[3].equals("desc")) x=1;
@@ -252,16 +257,18 @@ public class StudentsCommands {
                 } else {
                     students = Student.Sort(args[2], x);
                 }
+                if(students.size()==0) Message.noRecords();
                 printStudentDetails(students);
             } catch (Exception e) {
-                System.out.println(e);
+                Error.errorMsg(e.toString());
             }
         } else if(args[0].equals("-search")) {
             try {
                 ArrayList<Student> students = Student.Search(args[2], args[3]);
+                if(students.size()==0) Message.noRecords();
                 printStudentDetails(students);
             } catch (Exception e) {
-                System.out.println(e);
+                Message.noRecords();
             }
         } else if(args[0].equals("-update")) {
             Login.log("Admin", values);
@@ -270,13 +277,12 @@ public class StudentsCommands {
                 try {
                     Student.update(args[2], args[3], args[4]);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.errorMsg(e.toString());
                 }
+                Message.updated();
             } else {
-                System.out.println("Error");
+                Error.loginFailed();
             }
-            System.exit(0);
         }
     }
-
 }

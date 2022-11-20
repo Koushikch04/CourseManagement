@@ -2,6 +2,7 @@ package personPackage;
 
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Date;
+import AdditionalComponents.Message;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -74,7 +75,7 @@ public class Teacher extends Person{
         String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         Statement st = con.createStatement();
-        String query = "create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
+        String query = "create table if not exists Teacher (teacherId varchar(10) NOT NULL,name varchar(40) NOT NULL,deptName varchar(30) NOT NULL,gender varchar(30) NOT NULL,salary numeric(10,0) NOT NULL,dob Date,title varchar(30) NOT NULL,primary key(teacherId))";
         st.executeUpdate(query);
         query = "insert into Teacher values(?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(query);
@@ -95,6 +96,7 @@ public class Teacher extends Person{
             ps.setString(7, sr[6]);
             ps.executeUpdate();
         }
+        con.close();
     }
 
     public static void addTeacher(Teacher teacher) throws SQLException {
@@ -102,7 +104,7 @@ public class Teacher extends Person{
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
-        String query = "create table if not exists Teacher (teacherId varchar(10),name varchar(40),deptName varchar(30),gender varchar(30),salary numeric(10,0),dob Date,title varchar(30),primary key(teacherId))";
+        String query = "create table if not exists Teacher (teacherId varchar(10) NOT NULL,name varchar(40) NOT NULL,deptName varchar(30) NOT NULL,gender varchar(30) NOT NULL,salary numeric(10,0) NOT NULL,dob Date,title varchar(30) NOT NULL,primary key(teacherId))";
         Statement st = con.createStatement();
         st.executeUpdate(query);
         query = "insert into Teacher values(?,?,?,?,?,?,?)";
@@ -115,7 +117,7 @@ public class Teacher extends Person{
         ps.setDate(6, java.sql.Date.valueOf(teacher.getDob()));
         ps.setString(7, teacher.getTitle());
         ps.executeUpdate();
-        System.out.println("Teacher added");
+        con.close();
     }
 
     public static void removeTeacher(String teacherID) throws SQLException {
@@ -126,8 +128,12 @@ public class Teacher extends Person{
         String query = "delete from Teacher where teacherId=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, teacherID);
-        ps.executeUpdate();
-        System.out.println("Teacher removed successfully");
+        int x = ps.executeUpdate();
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
     }
 
     public static void removeTeachers() throws SQLException {
@@ -138,6 +144,7 @@ public class Teacher extends Person{
         Statement st = con.createStatement();
         String query = "truncate Teacher";
         st.executeUpdate(query);
+        con.close();
     }
 
 
@@ -157,6 +164,7 @@ public class Teacher extends Person{
             Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
+        con.close();
         return teach;
     }
 
@@ -174,6 +182,11 @@ public class Teacher extends Person{
             Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
+        if(teach.size()==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
         return teach;
     }
 
@@ -184,7 +197,12 @@ public class Teacher extends Person{
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="update teacher set "+field+"=\""+newValue+"\" where teacherId=\""+Id+"\"";
         Statement st=con.createStatement();
-        st.executeUpdate(query);
+        int x = st.executeUpdate(query);
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
     }
 
     public static int authentication(String id, String dob) throws SQLException {
@@ -199,6 +217,7 @@ public class Teacher extends Person{
             String s = rs.getString(1).replace("-","");
             if(dob.equals(s)) return 1;
         }
+        con.close();
         return 0;
     }
 
