@@ -77,6 +77,7 @@ public class Student extends Person {
             ps.setString(5,str[4]);
             ps.executeUpdate();
         }
+        con.close();
     }
     public static void addStudent(Student student) throws Exception {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
@@ -94,6 +95,7 @@ public class Student extends Person {
         ps.setDate(4,java.sql.Date.valueOf(student.getDob()));
         ps.setString(5, student.getGender());
         ps.executeUpdate();
+        con.close();
     }
 
     public static  ArrayList<Student> Sort( String sortField,int order) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -122,7 +124,8 @@ public class Student extends Person {
         {
             System.out.println("FieldName "+sortField+" is not valid");
         }
-     return list;
+        con.close();
+        return list;
     }
 
 
@@ -150,6 +153,7 @@ public class Student extends Person {
         {
             System.out.println("FieldName "+fieldName+" is not valid");
         }
+        con.close();
         return list;
     }
 
@@ -164,6 +168,7 @@ public class Student extends Person {
         ps.setString(1,studId);
         ps.executeUpdate();
         System.out.println("Student removed successfully");
+        con.close();
     }
 
     public static void removeStudents() throws SQLException {
@@ -185,6 +190,7 @@ public class Student extends Person {
         String query="update students set "+Field+"=\""+newValue+"\" where studId=\""+Id+"\"";
         Statement st=con.createStatement();
         st.executeUpdate(query);
+        con.close();
     }
 
     public static int authentication(String id, String dob) throws SQLException {
@@ -199,6 +205,7 @@ public class Student extends Person {
             String s = rs.getString(1).replace("-","");
             if(dob.equals(s)) return 1;
         }
+        con.close();
         return 0;
     }
 }
