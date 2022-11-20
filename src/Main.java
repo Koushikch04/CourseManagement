@@ -1,4 +1,5 @@
 
+import AdditionalComponents.Login;
 import CommandLine.*;
 import personPackage.Student;
 import personPackage.Teacher;
@@ -21,6 +22,9 @@ public class Main {
         } else if (args[1].equals("Teachers")) {
             TeachersCommands.connect(args);
         }
+//        Login.log("Teacher");
 //        System.out.println(Teacher.authentication("adf","20211010"));
+//        CommandLineArguments cs=new CommandLineArguments();
+//        System.out.println(cs);
     }
 }
