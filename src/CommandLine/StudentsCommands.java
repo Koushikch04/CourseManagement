@@ -1,6 +1,6 @@
 package CommandLine;
 import personPackage.*;
-
+import AdditionalComponents.Date;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -140,7 +140,7 @@ public class StudentsCommands {
 
 
                 LocalDate dob = LocalDate.parse(f3.getText());
-                student.setDob(dob);
+                student.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
 
                 student.setStudID(f5.getText());
                 fr.dispose();

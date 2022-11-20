@@ -1,9 +1,11 @@
 package personPackage;
+
 import AdditionalComponents.JdbcDetails;
+import AdditionalComponents.Date;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -11,7 +13,6 @@ import java.util.*;
 public class Teacher extends Person{
     private String teacherID;
     private String departmentName;
-
     private Double salary;
     private String title;
 
@@ -35,7 +36,7 @@ public class Teacher extends Person{
         super();
     }
 
-    public Teacher(String teacherID, String name, String deptName, String gender, Double salary, LocalDate dob, String title) {
+    public Teacher(String teacherID, String name, String deptName, String gender, Double salary, Date dob, String title) {
         super(name, gender, dob);
         this.teacherID = teacherID;
         this.departmentName = deptName;
@@ -62,7 +63,7 @@ public class Teacher extends Person{
 
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
-        Period period = Period.between(super.getDob(), curDate);
+        Period period = Period.between(LocalDate.parse(super.getDob()), curDate);
         String ans = "Dr. " + super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
         return ans;
     }
@@ -90,7 +91,7 @@ public class Teacher extends Person{
             ps.setString(3, sr[2]);
             ps.setString(4, sr[3]);
             ps.setDouble(5, Double.parseDouble(sr[4].trim()));
-            ps.setDate(6, Date.valueOf(year + "-" + month + "-" + day));
+            ps.setDate(6, java.sql.Date.valueOf(year + "-" + month + "-" + day));
             ps.setString(7, sr[6]);
             ps.executeUpdate();
         }
@@ -111,7 +112,7 @@ public class Teacher extends Person{
         ps.setString(3, teacher.getDepartmentName());
         ps.setString(4, teacher.getGender());
         ps.setDouble(5, teacher.getSalary());
-        ps.setDate(6, Date.valueOf(teacher.getDob()));
+        ps.setDate(6, java.sql.Date.valueOf(teacher.getDob()));
         ps.setString(7, teacher.getTitle());
         ps.executeUpdate();
         System.out.println("Teacher added");
@@ -152,7 +153,8 @@ public class Teacher extends Person{
         ResultSet rs = st.executeQuery(query);
         ArrayList<Teacher> teach = new ArrayList<>();
         while (rs.next()) {
-            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDate(6).toLocalDate(), rs.getString(7));
+            LocalDate ld=rs.getDate(4).toLocalDate();
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
         return teach;
@@ -168,7 +170,8 @@ public class Teacher extends Person{
         ResultSet rs = st.executeQuery(query);
         ArrayList<Teacher> teach = new ArrayList<>();
         while (rs.next()) {
-            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getDate(6).toLocalDate(), rs.getString(7));
+            LocalDate ld=rs.getDate(4).toLocalDate();
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
         return teach;

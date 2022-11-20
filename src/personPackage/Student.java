@@ -1,7 +1,8 @@
 package personPackage;
 
 import AdditionalComponents.JdbcDetails;
-import java.sql.Date;
+import AdditionalComponents.Date;
+
 import java.util.*;
 import java.io.File;
 import java.sql.*;
@@ -17,7 +18,7 @@ public class Student extends Person {
     public Student() {
         super();
     }
-    public Student(String studID, String name, String deptName, LocalDate dob, String gender) {
+    public Student(String studID, String name, String deptName, Date dob, String gender) {
         super(name, gender, dob);
         this.studID = studID;
         this.branch = deptName;
@@ -43,7 +44,7 @@ public class Student extends Person {
 
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
-        Period period = Period.between(super.getDob(), curDate);
+        Period period = Period.between(LocalDate.parse(super.getDob()), curDate);
         String ans = super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
         return ans;
     }
@@ -64,13 +65,11 @@ public class Student extends Person {
             SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
             SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
             String[] str=sc.nextLine().split(",");
-//            System.out.println("str[0]:"+str[0]+"str[1]:"+str[1]+"str[2]:"+str[2]+"str[3]:"+str[3]+"str[4]:"+str[4]);
             String[] sr=str[3].split("-");
             int year=Integer.parseInt(sr[2]);
             int month=Integer.parseInt(sr[1]);
             int day=Integer.parseInt(sr[0]);
-            Date date= Date.valueOf(year+"-"+month+"-"+day);
-//            System.out.printf("%s\n",str[3]);
+            java.sql.Date date= java.sql.Date.valueOf(year+"-"+month+"-"+day);
             ps.setString(1,str[0].trim());
             ps.setString(2,str[1]);
             ps.setString(3,str[2]);
@@ -92,7 +91,7 @@ public class Student extends Person {
         ps.setString(1,student.getStudID());
         ps.setString(2,student.getName());
         ps.setString(3,student.getBranch());
-        ps.setDate(4,Date.valueOf(student.getDob()));
+        ps.setDate(4,java.sql.Date.valueOf(student.getDob()));
         ps.setString(5, student.getGender());
         ps.executeUpdate();
     }
@@ -114,7 +113,8 @@ public class Student extends Person {
              list=new ArrayList<>();
             while(rs.next())
             {
-                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+                LocalDate ld=rs.getDate(4).toLocalDate();
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
         }
@@ -141,7 +141,8 @@ public class Student extends Person {
             list=new ArrayList<>();
             while(rs.next())
             {
-                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4).toLocalDate(),rs.getString(5));
+                LocalDate ld=rs.getDate(4).toLocalDate();
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
         }

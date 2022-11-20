@@ -1,20 +1,17 @@
 package CommandLine;
 
-import com.mysql.cj.exceptions.StreamingNotifiable;
-import personPackage.Student;
+import AdditionalComponents.Date;
 import personPackage.Teacher;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TeachersCommands {
-    public static void addTeacherGUI(Teacher teacher) {
+    private static void addTeacherGUI(Teacher teacher) {
         final JTextField f1 = new JTextField();
         final JTextField f2 = new JTextField();
         final JTextField f3 = new JTextField("YY-MM-DD FORMAT");
@@ -97,7 +94,7 @@ public class TeachersCommands {
                 teacher.setName(f1.getText());
                 teacher.setGender(f2.getText());
                 LocalDate dob = LocalDate.parse(f3.getText());
-                teacher.setDob(dob);
+                teacher.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
                 teacher.setDepartmentName(f4.getText());
                 teacher.setTeacherID(f5.getText());
                 teacher.setTitle(f6.getText());
@@ -143,7 +140,7 @@ public class TeachersCommands {
         f.setVisible(true);
 
     }
-    public static void add(String[] args) {
+    private static void add(String[] args) {
         if(args.length==2) {
             Teacher teacher = new Teacher();
             addTeacherGUI(teacher);
