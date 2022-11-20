@@ -1,6 +1,8 @@
 package CommandLine;
 
 import AdditionalComponents.Date;
+import AdditionalComponents.Login;
+import personPackage.Admin;
 import personPackage.Teacher;
 
 import javax.swing.*;
@@ -11,16 +13,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TeachersCommands {
-    private static void addTeacherGUI(Teacher teacher) {
+    public static void addTeacherGUI(Teacher teacher) {
         final JTextField f1 = new JTextField();
-        final JTextField f2 = new JTextField();
-        final JTextField f3 = new JTextField("YY-MM-DD FORMAT");
-        final JTextField f4 = new JTextField();
+        final JTextField f3 = new JTextField("YYYY-MM-DD");
         final JTextField f5 = new JTextField();
         final JTextField f6 = new JTextField();
         final JTextField f7 = new JTextField();
 
-        JFrame f = new JFrame();
+        final JFrame f = new JFrame();
         final JDialog fr = new JDialog(f, "Add Teacher");
         fr.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         JLabel l1 = new JLabel();
@@ -52,50 +52,121 @@ public class TeachersCommands {
         l5.setBounds(50,204,98,27);
         fr.getContentPane().add(l5);
         l6.setText("Title ");
-        l6.setFont(new Font("Serif", Font.PLAIN, 20));
-        l6.setBounds(50,240,98,27);
+        l6.setFont(new Font("Serif", Font.PLAIN,
+                20));
+        l6.setBounds(50,245,98,27);
         fr.getContentPane().add(l6);
         l7.setText("Salary ");
         l7.setFont(new Font("Serif", Font.PLAIN, 20));
-        l7.setBounds(50,280,98,27);
+        l7.setBounds(50,285,98,27);
         fr.getContentPane().add(l7);
         l8.setText("ENTER THE DETAILS ");
         l8.setFont(new Font("Serif", Font.PLAIN, 20));
         l8.setBounds(69,22,215,27);
         fr.getContentPane().add(l8);
-        f1.setBounds(182, 73, 150, 20);
-        f2.setBounds(182, 105, 150, 20);
-        f3.setBounds(182, 138, 150, 20);
-        f4.setBounds(182, 175, 150, 20);
-        f5.setBounds(182, 212, 150, 20);
-        f6.setBounds(182, 250, 150, 20);
-        f7.setBounds(182, 290, 150, 20);
+        f1.setBounds(182, 73, 161, 20);
+        f3.setBounds(182, 138, 161, 20);
+        f5.setBounds(182, 212, 161, 20);
+        f6.setBounds(182, 250, 161, 20);
+        f7.setBounds(182, 290, 161, 20);
 
         fr.getContentPane().add(f1, BorderLayout.NORTH);
-        fr.getContentPane().add(f2);
         fr.getContentPane().add(f3);
-        fr.getContentPane().add(f4);
         fr.getContentPane().add(f5);
         fr.getContentPane().add(f6);
         fr.getContentPane().add(f7);
         JButton b = new JButton("SUBMIT");
-        b.setBounds(118, 365, 122, 33);
+        b.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        b.setBounds(118, 333, 122, 33);
         fr.getContentPane().add(b);
-        JLabel lab = new JLabel("New label");
-        lab.setIcon(new ImageIcon("src/CommandLine/image.png"));
-        lab.setBounds(0, -50, 950, 450);
+        final JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Female");
+        rdbtnNewRadioButton_1.setBounds(243, 104, 82, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1);
+        fr.setSize(950,450);
+
+
+        final JRadioButton rdbtnNewRadioButton_1_1 = new JRadioButton("Male");
+        rdbtnNewRadioButton_1_1.setBounds(181, 104, 60, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_1);
+
+
+        final JRadioButton rdbtnNewRadioButton_1_2 = new JRadioButton("Other");
+        rdbtnNewRadioButton_1_2.setBounds(327, 104, 60, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_2);
+
+
+        final JRadioButton rdbtnNewRadioButton_1_1_1 = new JRadioButton("CSE");
+        rdbtnNewRadioButton_1_1_1.setBounds(182, 174, 69, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_1_1);
+
+        final JRadioButton rdbtnNewRadioButton_1_3 = new JRadioButton("ECE");
+        rdbtnNewRadioButton_1_3.setBounds(253, 174, 82, 21);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_3);
+
+        rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1_1.setSelected(false);
+                rdbtnNewRadioButton_1_2.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1.setSelected(false);
+                rdbtnNewRadioButton_1_2.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1.setSelected(false);
+                rdbtnNewRadioButton_1_1.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1_1_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1_3.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1_3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                rdbtnNewRadioButton_1_1_1.setSelected(false);
+            }
+
+        });
+
+
+
+        JLabel lab = new JLabel("new label");
+        lab.setIcon(new ImageIcon("CommandLine/teacher.jpeg"));
+        lab.setBounds(10, 0, 926, 413);
         fr.getContentPane().add(lab);
         fr.getContentPane().setLayout(null);
-        fr.setSize(950,450);
+
 
 
         b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 teacher.setName(f1.getText());
-                teacher.setGender(f2.getText());
+                if (rdbtnNewRadioButton_1_1.isSelected()) {
+                    teacher.setGender("Male");
+                }
+                else if (rdbtnNewRadioButton_1.isSelected()){
+                    teacher.setGender("Female");
+                } else if(rdbtnNewRadioButton_1_2.isSelected()) {
+                    teacher.setGender("Other");
+                }
+                if (rdbtnNewRadioButton_1_1_1.isSelected()) {
+                    teacher.setDepartmentName("CSE");
+                }
+                else if (rdbtnNewRadioButton_1_3.isSelected()) {
+                    teacher.setDepartmentName("ECE");
+                }
                 LocalDate dob = LocalDate.parse(f3.getText());
                 teacher.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
-                teacher.setDepartmentName(f4.getText());
                 teacher.setTeacherID(f5.getText());
                 teacher.setTitle(f6.getText());
                 teacher.setSalary(Double.parseDouble(f7.getText()));
@@ -141,43 +212,59 @@ public class TeachersCommands {
 
     }
     private static void add(String[] args) {
-        if(args.length==2) {
-            Teacher teacher = new Teacher();
-            addTeacherGUI(teacher);
+        String values[] = new String[2];
+        Login.log("Admin", values);
+        int x = Admin.authentication(values[0], values[1]);
+        if (x == 1) {
+            if (args.length == 2) {
+                Teacher teacher = new Teacher();
+                addTeacherGUI(teacher);
 
-            try {
-                Teacher.addTeacher(teacher);
+                try {
+                    Teacher.addTeacher(teacher);
 
-            } catch (Exception e) {
-                System.out.println(e);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                System.exit(0);
+            } else {
+                try {
+                    Teacher.addTeachers(args[2]);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
-            System.exit(0);
         } else {
-            try {
-                Teacher.addTeachers(args[2]);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            System.out.println("Error");
         }
+        System.exit(0);
     }
 
     public static void connect(String args[]) {
+        String values[] = new String[2];
         if(args[0].equals("-add")) {
             add(args);
         } else if(args[0].equals("-rmv")) {
-            if(args.length==3) {
-                try {
-                    Teacher.removeTeacher(args[2]);
-                } catch (Exception e) {
-                    System.out.println(e);
+            Login.log("Admin", values);
+            int x = Admin.authentication(values[0], values[1]);
+            if(x==1) {
+                if (args.length == 3) {
+                    try {
+                        Teacher.removeTeacher(args[2]);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                } else {
+                    try {
+                        Teacher.removeTeachers();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
             } else {
-                try {
-                    Teacher.removeTeachers();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
+                System.out.println("Error");
             }
+            System.exit(0);
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
             int x = 0;
             if(args.length > 3 && args[3].equals("desc")) x=1;
@@ -200,11 +287,18 @@ public class TeachersCommands {
                 System.out.println(e);
             }
         } else if(args[0].equals("-update")) {
-            try {
-                Teacher.update(args[2], args[3], args[4]);
-            } catch (Exception e) {
-                System.out.println(e);
+            Login.log("Admin", values);
+            int x = Admin.authentication(values[0], values[1]);
+            if(x==1) {
+                try {
+                    Teacher.update(args[2], args[3], args[4]);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else {
+                System.out.println("Error");
             }
+            System.exit(0);
         }
     }
 }
