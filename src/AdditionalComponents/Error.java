@@ -30,7 +30,7 @@ public class Error {
     }
 
     public static void loginFailed() {
-        errorMsg("INVALID USERNAME PASSWORD");
+        errorMsg("INVALID USERNAME OR PASSWORD");
     }
 
 }
