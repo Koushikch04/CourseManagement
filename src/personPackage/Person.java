@@ -1,14 +1,14 @@
 package personPackage;
 
-import java.time.LocalDate;
+import AdditionalComponents.Date;
 
 abstract public class Person {
     private String name;
     private String gender;
-    private LocalDate dob;
+    private Date dob;
 
     public Person() {};
-    public Person(String name, String gender, LocalDate dob) {
+    public Person(String name, String gender, Date dob) {
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -29,11 +29,11 @@ abstract public class Person {
         this.gender = gender;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public String getDob() {
+        return dob.getYear()+"-"+dob.getMonth()+"-"+dob.getDay();
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
