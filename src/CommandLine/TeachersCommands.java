@@ -1,7 +1,9 @@
 package CommandLine;
 
 import AdditionalComponents.Date;
+import AdditionalComponents.Error;
 import AdditionalComponents.Login;
+import AdditionalComponents.Message;
 import personPackage.Admin;
 import personPackage.Teacher;
 
@@ -183,10 +185,18 @@ public class TeachersCommands {
                 else if (rdbtnNewRadioButton_1_1_1_2.isSelected()) {
                     teacher.setTitle("ASST. PROF.");
                 }
-                LocalDate dob = LocalDate.parse(f3.getText());
-                teacher.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
+                try {
+                    LocalDate dob = LocalDate.parse(f3.getText());
+                    teacher.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
+                } catch (Exception error) {
+                    Error.dateError();
+                }
                 teacher.setTeacherID(f5.getText());
-                teacher.setSalary(Double.parseDouble(f7.getText()));
+                try {
+                    teacher.setSalary(Double.parseDouble(f7.getText()));
+                } catch (Exception error1) {
+                    Error.doubleError();
+                }
                 fr.dispose();
             }
         });
@@ -236,25 +246,22 @@ public class TeachersCommands {
             if (args.length == 2) {
                 Teacher teacher = new Teacher();
                 addTeacherGUI(teacher);
-
                 try {
                     Teacher.addTeacher(teacher);
-
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.allFields();
                 }
-                System.exit(0);
             } else {
                 try {
                     Teacher.addTeachers(args[2]);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.allFields();
                 }
             }
+            Message.added();
         } else {
-            System.out.println("Error");
+            Error.loginFailed();
         }
-        System.exit(0);
     }
 
     public static void connect(String args[]) {
@@ -269,17 +276,18 @@ public class TeachersCommands {
                     try {
                         Teacher.removeTeacher(args[2]);
                     } catch (Exception e) {
-                        System.out.println(e);
+                        Error.errorMsg(e.toString());
                     }
                 } else {
                     try {
                         Teacher.removeTeachers();
                     } catch (Exception e) {
-                        System.out.println(e);
+                        Error.errorMsg(e.toString());
                     }
                 }
+                Message.removed();
             } else {
-                System.out.println("Error");
+                Error.loginFailed();
             }
             System.exit(0);
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
@@ -292,16 +300,18 @@ public class TeachersCommands {
                 } else {
                     teachers = Teacher.Sort(args[2], x);
                 }
+                if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
-                System.out.println(e);
+                Error.errorMsg(e.toString());
             }
         } else if(args[0].equals("-search")) {
             try {
                 ArrayList<Teacher> teachers = Teacher.Search(args[2], args[3]);
+                if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
-                System.out.println(e);
+                Error.errorMsg(e.toString());
             }
         } else if(args[0].equals("-update")) {
             Login.log("Admin", values);
@@ -310,12 +320,12 @@ public class TeachersCommands {
                 try {
                     Teacher.update(args[2], args[3], args[4]);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    Error.errorMsg(e.toString());
                 }
+                Message.updated();
             } else {
-                System.out.println("Error");
+                Error.loginFailed();
             }
-            System.exit(0);
         }
     }
 }
