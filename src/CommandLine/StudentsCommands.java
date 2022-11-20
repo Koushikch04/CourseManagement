@@ -1,4 +1,5 @@
 package CommandLine;
+import AdditionalComponents.Error;
 import AdditionalComponents.Login;
 import personPackage.*;
 import AdditionalComponents.Date;
@@ -210,7 +211,7 @@ public class StudentsCommands {
 
             }
         } else {
-            System.out.println("Error");
+            Error.loginFailed();
         }
         System.exit(0);
     }

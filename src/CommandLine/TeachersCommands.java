@@ -17,7 +17,6 @@ public class TeachersCommands {
         final JTextField f1 = new JTextField();
         final JTextField f3 = new JTextField("YYYY-MM-DD");
         final JTextField f5 = new JTextField();
-        final JTextField f6 = new JTextField();
         final JTextField f7 = new JTextField();
 
         final JFrame f = new JFrame();
@@ -41,66 +40,64 @@ public class TeachersCommands {
         fr.getContentPane().add(l2);
         l3.setText("DOB ");
         l3.setFont(new Font("Serif", Font.PLAIN, 20));
-        l3.setBounds(50,130,122,27);
+        l3.setBounds(50,171,122,27);
         fr.getContentPane().add(l3);
         l4.setText("DeptName ");
         l4.setFont(new Font("Serif", Font.PLAIN, 20));
-        l4.setBounds(50,167,98,27);
+        l4.setBounds(50,208,98,27);
         fr.getContentPane().add(l4);
         l5.setText("Teacher ID ");
         l5.setFont(new Font("Serif", Font.PLAIN, 20));
-        l5.setBounds(50,204,98,27);
+        l5.setBounds(50,245,98,27);
         fr.getContentPane().add(l5);
         l6.setText("Title ");
         l6.setFont(new Font("Serif", Font.PLAIN,
                 20));
-        l6.setBounds(50,245,98,27);
+        l6.setBounds(50,282,98,27);
         fr.getContentPane().add(l6);
         l7.setText("Salary ");
         l7.setFont(new Font("Serif", Font.PLAIN, 20));
-        l7.setBounds(50,285,98,27);
+        l7.setBounds(50,319,98,27);
         fr.getContentPane().add(l7);
         l8.setText("ENTER THE DETAILS ");
         l8.setFont(new Font("Serif", Font.PLAIN, 20));
         l8.setBounds(69,22,215,27);
         fr.getContentPane().add(l8);
         f1.setBounds(182, 73, 161, 20);
-        f3.setBounds(182, 138, 161, 20);
-        f5.setBounds(182, 212, 161, 20);
-        f6.setBounds(182, 250, 161, 20);
-        f7.setBounds(182, 290, 161, 20);
+        f3.setBounds(182, 171, 161, 27);
+        f5.setBounds(182, 242, 161, 28);
+        f7.setBounds(182, 320, 161, 27);
 
         fr.getContentPane().add(f1, BorderLayout.NORTH);
         fr.getContentPane().add(f3);
         fr.getContentPane().add(f5);
-        fr.getContentPane().add(f6);
         fr.getContentPane().add(f7);
         JButton b = new JButton("SUBMIT");
         b.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        b.setBounds(118, 333, 122, 33);
+        b.setBounds(119, 356, 122, 33);
         fr.getContentPane().add(b);
         final JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Female");
-        rdbtnNewRadioButton_1.setBounds(243, 104, 82, 21);
+        rdbtnNewRadioButton_1.setBounds(180, 127, 82, 21);
         fr.getContentPane().add(rdbtnNewRadioButton_1);
         fr.setSize(950,450);
 
 
         final JRadioButton rdbtnNewRadioButton_1_1 = new JRadioButton("Male");
-        rdbtnNewRadioButton_1_1.setBounds(181, 104, 60, 21);
+        rdbtnNewRadioButton_1_1.setBounds(181, 104, 81, 21);
         fr.getContentPane().add(rdbtnNewRadioButton_1_1);
 
 
         final JRadioButton rdbtnNewRadioButton_1_2 = new JRadioButton("Other");
-        rdbtnNewRadioButton_1_2.setBounds(327, 104, 60, 21);
+        rdbtnNewRadioButton_1_2.setBounds(265, 104, 60, 21);
         fr.getContentPane().add(rdbtnNewRadioButton_1_2);
 
 
         final JRadioButton rdbtnNewRadioButton_1_1_1 = new JRadioButton("CSE");
-        rdbtnNewRadioButton_1_1_1.setBounds(182, 174, 69, 21);
+        rdbtnNewRadioButton_1_1_1.setBounds(182, 215, 60, 21);
         fr.getContentPane().add(rdbtnNewRadioButton_1_1_1);
 
         final JRadioButton rdbtnNewRadioButton_1_3 = new JRadioButton("ECE");
-        rdbtnNewRadioButton_1_3.setBounds(253, 174, 82, 21);
+        rdbtnNewRadioButton_1_3.setBounds(243, 215, 82, 21);
         fr.getContentPane().add(rdbtnNewRadioButton_1_3);
 
         rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
@@ -132,22 +129,37 @@ public class TeachersCommands {
         });
         rdbtnNewRadioButton_1_3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 rdbtnNewRadioButton_1_1_1.setSelected(false);
             }
 
         });
 
+        JRadioButton rdbtnNewRadioButton_1_1_1_1 = new JRadioButton("PROF.");
+        rdbtnNewRadioButton_1_1_1_1.setBounds(182, 282, 68, 27);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_1_1_1);
 
+        JRadioButton rdbtnNewRadioButton_1_1_1_2 = new JRadioButton("ASST. PROF.");
+        rdbtnNewRadioButton_1_1_1_2.setBounds(248, 282, 108, 27);
+        fr.getContentPane().add(rdbtnNewRadioButton_1_1_1_2);
+
+        rdbtnNewRadioButton_1_1_1_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1_1_1_2.setSelected(false);
+            }
+
+        });
+        rdbtnNewRadioButton_1_1_1_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rdbtnNewRadioButton_1_1_1_1.setSelected(false);
+            }
+
+        });
 
         JLabel lab = new JLabel("new label");
         lab.setIcon(new ImageIcon("CommandLine/teacher.jpeg"));
-        lab.setBounds(10, 0, 926, 413);
+        lab.setBounds(0, 0, 936, 413);
         fr.getContentPane().add(lab);
         fr.getContentPane().setLayout(null);
-
-
-
         b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 teacher.setName(f1.getText());
@@ -165,10 +177,15 @@ public class TeachersCommands {
                 else if (rdbtnNewRadioButton_1_3.isSelected()) {
                     teacher.setDepartmentName("ECE");
                 }
+                if (rdbtnNewRadioButton_1_1_1_1.isSelected()) {
+                    teacher.setTitle("PROF.");
+                }
+                else if (rdbtnNewRadioButton_1_1_1_2.isSelected()) {
+                    teacher.setTitle("ASST. PROF.");
+                }
                 LocalDate dob = LocalDate.parse(f3.getText());
                 teacher.setDob(new Date(dob.getYear(),(short)dob.getMonthValue(),(short)dob.getDayOfMonth()));
                 teacher.setTeacherID(f5.getText());
-                teacher.setTitle(f6.getText());
                 teacher.setSalary(Double.parseDouble(f7.getText()));
                 fr.dispose();
             }
