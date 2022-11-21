@@ -45,8 +45,7 @@ public class Student extends Person {
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
         Period period = Period.between(LocalDate.parse(super.getDob()), curDate);
-        String ans = super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
-        return ans;
+        return  super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
     }
 
     public static void addStudents(String file) throws Exception {
@@ -59,10 +58,10 @@ public class Student extends Person {
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("personPackage/"+file));
+        Scanner sc=new Scanner(new File("src/personPackage/"+file));
         while(sc.hasNextLine())
         {
-            SimpleDateFormat sdf=new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
             SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
             String[] str=sc.nextLine().split(",");
             String[] sr=str[3].split("-");
@@ -99,7 +98,7 @@ public class Student extends Person {
     public static  ArrayList<Student> Sort( String sortField,int order) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
-        String PassWord=JdbcDetails.getPassword();
+        String PassWord="root1234";
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         String query="select * from students order by "+sortField;
         if(order==1) {
@@ -150,6 +149,7 @@ public class Student extends Person {
         {
             System.out.println("FieldName "+fieldName+" is not valid");
         }
+        con.close();
         return list;
     }
 

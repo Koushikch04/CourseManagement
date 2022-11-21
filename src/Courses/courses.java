@@ -75,7 +75,7 @@ public class courses {
         st.executeUpdate(query);
         query="insert into courses values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("C:\\Users\\chk24\\Downloads\\course.csv"));
         while(sc.hasNextLine())
         {
             String[] str=sc.nextLine().split(",");
