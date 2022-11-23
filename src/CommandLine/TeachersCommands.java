@@ -4,6 +4,7 @@ import AdditionalComponents.Date;
 import AdditionalComponents.Error;
 import AdditionalComponents.Login;
 import AdditionalComponents.Message;
+import Courses.*;
 import personPackage.Admin;
 import personPackage.Student;
 import personPackage.Teacher;
@@ -277,13 +278,13 @@ public class TeachersCommands {
                     try {
                         Teacher.removeTeacher(args[2]);
                     } catch (Exception e) {
-                        Error.errorMsg(e.toString());
+                        Error.unexpectedError();
                     }
                 } else {
                     try {
                         Teacher.removeTeachers();
                     } catch (Exception e) {
-                        Error.errorMsg(e.toString());
+                        Error.unexpectedError();
                     }
                 }
                 Message.removed();
@@ -304,7 +305,7 @@ public class TeachersCommands {
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
-                Error.errorMsg(e.toString());
+                Error.unexpectedError();
             }
         } else if(args[0].equals("-search")) {
             try {
@@ -312,7 +313,20 @@ public class TeachersCommands {
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
-                Error.errorMsg(e.toString());
+                Error.unexpectedError();
+            }
+        } else if(args[0].equals("-update") && args.length==3) {
+            Login.log("Admin", values);
+            int x = Admin.authentication(values[0], values[1]);
+            if(x==1) {
+                try {
+                    Teacher.updateViaCSV(args[2]);
+                } catch (Exception e) {
+                    Error.unexpectedError();
+                }
+                Message.updated();
+            } else {
+                Error.loginFailed();
             }
         } else if(args[0].equals("-update")) {
             Login.log("Admin", values);
@@ -321,7 +335,7 @@ public class TeachersCommands {
                 try {
                     Teacher.update(args[2], args[3], args[4]);
                 } catch (Exception e) {
-                    Error.errorMsg(e.toString());
+                    Error.unexpectedError();
                 }
                 Message.updated();
             } else {
@@ -334,6 +348,14 @@ public class TeachersCommands {
                 printTeacherDetails(teachers);
             } catch(Exception e) {
                 Error.errorMsg("Unexpected error occured!");
+            }
+        } else if(args[0].equals("-numericSearch")) {
+            try {
+                ArrayList<Teacher> teachers = Teacher.numericSearch(args[2],args[4],args[3]);
+                if(teachers.size()==0) Message.noRecords();
+                printTeacherDetails(teachers);
+            } catch (Exception e) {
+                Error.unexpectedError();
             }
         }
     }

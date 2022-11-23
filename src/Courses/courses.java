@@ -1,19 +1,17 @@
 package Courses;
-import AdditionalComponents.Date;
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Message;
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import personPackage.Teacher;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class courses {
      private String courseId;
+    private String InstructorId;
 
     public String getInstructorId() {
         return InstructorId;
@@ -23,7 +21,6 @@ public class courses {
         InstructorId = instructorId;
     }
 
-    private String InstructorId;
      private String title;
 
      private String Abbreviation;
@@ -198,7 +195,7 @@ public class courses {
         }
         return courseList;
     }
-    public static ArrayList<courses> StrongSearch(String fieldName,String Search) throws SQLException {
+    public static ArrayList<courses> partialSearch(String fieldName,String Search) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -213,7 +210,7 @@ public class courses {
         }
         return courseList;
     }
-    public static void UpdateCourses(String Id,String Field,String newValue) throws SQLException {
+    public static void update(String Id,String Field,String newValue) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
