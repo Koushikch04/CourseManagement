@@ -243,13 +243,31 @@ public class Teacher extends Person{
     }
 
 
-//    public static ArrayList<Student> numericSearch(String fieldName,String value,String operation) throws SQLException {
-//        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
-//        String UserName= JdbcDetails.getUserName();
-//        String PassWord=JdbcDetails.getPassword();
-//        Connection con = DriverManager.getConnection(url, UserName, PassWord);
-//        String query = "select * from Teacher where "+fieldName
-//    }
+    public static ArrayList<Teacher> numericSearch(String fieldName,String value,String operation) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select * from Teacher where "+fieldName;
+        if(operation.equals("-gt")){
+            query+=">"+Double.parseDouble(value);
+        }
+        else if(operation.equals("-lt")){
+            query+="<"+Double.parseDouble(value);
+        }
+        else if(operation.equals("-e")){
+            query+="="+Double.parseDouble(value);
+        }
+        Statement st = con.prepareStatement(query);
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Teacher> teach = new ArrayList<>();
+        while(rs.next()){
+            LocalDate ld=rs.getDate(6).toLocalDate();
+            Teacher temp = new Teacher(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getDouble(5),new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()),rs.getString(7));
+            teach.add(temp);
+        }
+        return teach;
+    }
     public static void update(String Id,String field,String newValue) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
