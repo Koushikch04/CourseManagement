@@ -56,7 +56,12 @@ public class Main {
 //        Student.update("S20210010007","dob","2004-04-24");
 //        CommandLineArguments cs=new CommandLineArguments();
 //        System.out.println(cs);
-//        ArrayList<Teacher> teach = Teacher.numericSearch("salary","100000.000","-e");
+        ArrayList<Teacher> teach = Teacher.numericSearch("salary","0.000","-gt");
+        Iterator<Teacher> it = teach.iterator();
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
 //        ArrayList<courses> teach = courses.Search("title", "ADSA");
 //        Iterator<courses> it = teach.iterator();
 //        courses.UpdateCourses("C02","title","koushik");
