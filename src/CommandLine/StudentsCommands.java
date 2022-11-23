@@ -212,7 +212,7 @@ public class StudentsCommands {
                 try {
                     Student.addStudents(args[2]);
                 } catch (Exception e) {
-                    Error.errorMsg(e.toString());
+                    Error.unexpectedError();
                 }
             }
             Message.added();
@@ -234,13 +234,13 @@ public class StudentsCommands {
                     try {
                         Student.removeStudents();
                     } catch (Exception e) {
-                        Error.errorMsg(e.toString());
+                        Error.unexpectedError();
                     }
                 } else {
                     try {
                         Student.removeStudent(args[2]);
                     } catch (Exception e) {
-                        Error.errorMsg(e.toString());
+                        Error.unexpectedError();
                     }
                 }
                 Message.removed();
@@ -260,7 +260,7 @@ public class StudentsCommands {
                 if(students.size()==0) Message.noRecords();
                 printStudentDetails(students);
             } catch (Exception e) {
-                Error.errorMsg(e.toString());
+                Error.unexpectedError();
             }
         } else if(args[0].equals("-search")) {
             try {
@@ -270,6 +270,19 @@ public class StudentsCommands {
             } catch (Exception e) {
                 Message.noRecords();
             }
+        } else if(args[0].equals("-update") && args.length==3) {
+            Login.log("Admin", values);
+            int x = Admin.authentication(values[0], values[1]);
+            if(x==1) {
+                try {
+                    Student.updateViaCSV(args[2]);
+                } catch (Exception e) {
+                    Error.unexpectedError();
+                }
+                Message.updated();
+            } else {
+                Error.loginFailed();
+            }
         } else if(args[0].equals("-update")) {
             Login.log("Admin", values);
             int x = Admin.authentication(values[0], values[1]);
@@ -277,7 +290,7 @@ public class StudentsCommands {
                 try {
                     Student.update(args[2], args[3], args[4]);
                 } catch (Exception e) {
-                    Error.errorMsg(e.toString());
+                    Error.unexpectedError();
                 }
                 Message.updated();
             } else {

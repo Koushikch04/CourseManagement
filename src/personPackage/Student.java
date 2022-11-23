@@ -3,6 +3,8 @@ package personPackage;
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Date;
 import AdditionalComponents.Message;
+import AdditionalComponents.Error;
+import Courses.*;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -147,17 +149,17 @@ public class Student extends Person {
         try {
             rs = ps.executeQuery();
             list=new ArrayList<>();
-//            if(list.size()==0) Message.noRecords();
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
                 Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
+            if(list.size()==0) Message.noRecords();
         }
         catch (SQLException e)
         {
-//            Message.noRecords();
+            Error.unexpectedError();
         }
         con.close();
         return list;
@@ -209,7 +211,7 @@ public class Student extends Person {
         con.close();
     }
 
-    public static void updateViaID(String file) throws SQLException, FileNotFoundException {
+    public static void updateViaCSV(String file) throws SQLException, FileNotFoundException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -261,38 +263,31 @@ public class Student extends Person {
         con.close();
     }
 
-    public static int authentication(String id, String dob) throws SQLException {
-        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
-        String UserName= JdbcDetails.getUserName();
-        String PassWord=JdbcDetails.getPassword();
-        Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        String query = "select dob from students where studId=\"" + id + "\"";
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(query);
-        if(rs.next())  {
-            String s = rs.getString(1).replace("-","");
-            if(dob.equals(s)) return 1;
-            Message.loginSuccess();
-        }
-        con.close();
-        return 0;
-    }
-    public static void studentCourses(String studId) throws SQLException {
+    public static ArrayList<courses> studentCourses(String studId) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
-        String query = "select courses.courseId ,courses.title,courses.abbreviation,courses.credits from Students natural join courses where Students.studId="+"'"+studId+"'"+";";
+        String query = "select courses.courseId,courses.InstructorId,courses.title,courses.abbreviation,courses.deptName,courses.credits from Students natural join courses where Students.studId="+"'"+studId+"'"+";";
         Statement st=con.createStatement();
-        ResultSet rs= st.executeQuery(query);
-        int k=0;
-        while(rs.next()){
-            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getInt(4));
-            k=1;
+        ResultSet rs;
+        ArrayList<courses> list = null;
+        try {
+            rs = st.executeQuery(query);
+            list=new ArrayList<>();
+            while(rs.next())
+            {
+                courses temp=new courses(rs.getString(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getString(5), Integer.parseInt(rs.getString(6)));
+                list.add(temp);
+            }
+            if(list.size()==0) Message.noRecords();
         }
-        if(k==0)
-            Message.noRecords();
-
+        catch (SQLException e)
+        {
+            Error.unexpectedError();
+        }
+        con.close();
+        return list;
     }
 }
 

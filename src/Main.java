@@ -15,16 +15,19 @@ import AdditionalComponents.Date;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-//        if (args.length == 1 && args[0].equals("-h")) {
-//            CommandLineArguments commandLineArguments = new CommandLineArguments();
-//            System.out.println(commandLineArguments);
-//
-//        }
-//        if (args[1].equals("Students")) {
-//            StudentsCommands.connect(args);
-//        } else if (args[1].equals("Teachers")) {
-//            TeachersCommands.connect(args);
-//        }
+
+        if (args.length == 1 && args[0].equals("-h")) {
+            CommandLineArguments commandLineArguments = new CommandLineArguments();
+            System.out.println(commandLineArguments);
+
+        }
+        if (args[1].equals("Students")) {
+            StudentsCommands.connect(args);
+        } else if (args[1].equals("Teachers")) {
+            TeachersCommands.connect(args);
+        } else if(args[1].equals("Courses")) {
+            CoursesCommand.connect(args);
+        }
 //        if (args.length == 1 && args[0].equals("-h")) {
 //            CommandLineArguments commandLineArguments = new CommandLineArguments();
 //            System.out.println(commandLineArguments);
@@ -65,7 +68,7 @@ public class Main {
 //        ArrayList<courses> teach = courses.Search("title", "ADSA");
 //        Iterator<courses> it = teach.iterator();
 //        courses.UpdateCourses("C02","title","koushik");
-        courses.updateViaCsv("courses.csv");
+//        courses.updateViaCsv("courses.csv");
 //        while(it.hasNext()){
 //            System.out.println(it.next());
 //        }
