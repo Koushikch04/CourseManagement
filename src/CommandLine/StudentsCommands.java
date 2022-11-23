@@ -283,6 +283,14 @@ public class StudentsCommands {
             } else {
                 Error.loginFailed();
             }
+        } else if(args[0].equals("-partialSearch")) {
+            try {
+                ArrayList<Student> students = Student.partialSearch(args[2],args[3]);
+                if(students.size()==0) Message.noRecords();
+                printStudentDetails(students);
+            } catch(Exception e) {
+                Error.errorMsg("Unexpected error occured!");
+            }
         }
     }
 }

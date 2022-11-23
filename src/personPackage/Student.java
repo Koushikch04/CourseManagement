@@ -163,7 +163,7 @@ public class Student extends Person {
         return list;
     }
 
-    public static  ArrayList<Student> StrongSearch( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static  ArrayList<Student> partialSearch( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -176,7 +176,7 @@ public class Student extends Person {
         try {
             rs = ps.executeQuery();
             list=new ArrayList<>();
-            if(list.size()==0) Message.noRecords();
+//            if(list.size()==0) Message.noRecords();
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();

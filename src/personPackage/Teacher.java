@@ -220,7 +220,7 @@ public class Teacher extends Person{
         con.close();
         return teach;
     }
-    public static ArrayList<Teacher> StrongSearch(String fieldName, String Search) throws SQLException {
+    public static ArrayList<Teacher> partialSearch(String fieldName, String Search) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -242,6 +242,14 @@ public class Teacher extends Person{
         return teach;
     }
 
+
+//    public static ArrayList<Student> numericSearch(String fieldName,String value,String operation) throws SQLException {
+//        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+//        String UserName= JdbcDetails.getUserName();
+//        String PassWord=JdbcDetails.getPassword();
+//        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+//        String query = "select * from Teacher where "+fieldName
+//    }
     public static void update(String Id,String field,String newValue) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
