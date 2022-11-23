@@ -74,7 +74,7 @@ public class Teacher extends Person{
         return ans;
     }
 
-    public static void updateViaID(String file) throws SQLException, FileNotFoundException {
+    public static void updateViaCSV(String file) throws SQLException, FileNotFoundException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();

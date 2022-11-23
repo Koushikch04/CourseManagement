@@ -45,4 +45,6 @@ public class Error {
     public static void allFields() {
         errorMsg("ALL FIELDS VALUES ARE REQUIRED!");
     }
+
+    public static void unexpectedError() {errorMsg("Unexpected Error Occurred!");}
 }
