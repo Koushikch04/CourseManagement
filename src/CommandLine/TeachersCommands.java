@@ -5,6 +5,7 @@ import AdditionalComponents.Error;
 import AdditionalComponents.Login;
 import AdditionalComponents.Message;
 import personPackage.Admin;
+import personPackage.Student;
 import personPackage.Teacher;
 
 import javax.swing.*;
@@ -307,7 +308,7 @@ public class TeachersCommands {
             }
         } else if(args[0].equals("-search")) {
             try {
-                ArrayList<Teacher> teachers = Teacher.StrongSearch(args[2], args[3]);
+                ArrayList<Teacher> teachers = Teacher.Search(args[2], args[3]);
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
@@ -325,6 +326,14 @@ public class TeachersCommands {
                 Message.updated();
             } else {
                 Error.loginFailed();
+            }
+        } else if(args[0].equals("-partialSearch")) {
+            try {
+                ArrayList<Teacher> teachers = Teacher.partialSearch(args[2],args[3]);
+                if(teachers.size()==0) Message.noRecords();
+                printTeacherDetails(teachers);
+            } catch(Exception e) {
+                Error.errorMsg("Unexpected error occured!");
             }
         }
     }
