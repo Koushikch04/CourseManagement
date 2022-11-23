@@ -5,7 +5,6 @@ public class Date {
     private short day;
     private short month;
     private int year;
-
     public short getDay() {
         return day;
     }
@@ -34,7 +33,7 @@ public class Date {
     {
         return year+"-"+month+"-"+day;
     }
-    Date() {
+    public Date() {
     }
     public Date(int year, short month, short day){
         if(day > 2)
@@ -46,7 +45,7 @@ public class Date {
             };
             if(day > dom) {
                 if(day==29)
-                    throw new DateTimeException("Invalid date 'February 29' as '\" + year + \"' is not a leap year");
+                    throw new DateTimeException(" dateInvalid 'February 29' as '\" + year + \"' is not a leap year");
                 else
                     throw new DateTimeException("Invalid date '" + Month.of(month).name() + " " + day + "'");
             }

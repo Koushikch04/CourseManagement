@@ -41,4 +41,8 @@ public class Message {
     public static void noRecords() {
         message("NO RECORDS FOUND!");
     }
+
+    public static void loginSuccess(){
+        message("LOGIN SUCCESS");
+    }
 }
