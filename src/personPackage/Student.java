@@ -2,7 +2,9 @@ package personPackage;
 
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Date;
+import AdditionalComponents.Message;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.io.File;
 import java.sql.*;
@@ -40,6 +42,11 @@ public class Student extends Person {
         this.branch = branch;
     }
 
+    @Override
+    public String toString(){
+          return "studId:"+getStudID()+" name:"+getName()+" deptName:"+getBranch()+" dob:"+getDob()+" gender:"+getGender();
+    }
+
 
 
     public String calculateAge() {
@@ -54,7 +61,7 @@ public class Student extends Person {
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
-        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        String query="create table if not exists Students(studId varchar(30) NOT NULL,name varchar(100) NOT NULL, deptName varchar(30) NOT NULL,dob Date,gender varchar(10) NOT NULL,primary key(studId));";
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
@@ -76,6 +83,7 @@ public class Student extends Person {
             ps.setString(5,str[4]);
             ps.executeUpdate();
         }
+        con.close();
     }
     public static void addStudent(Student student) throws Exception {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
@@ -83,7 +91,7 @@ public class Student extends Person {
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
         Statement st=con.createStatement();
-        String query="create table if not exists Students(studId varchar(30),name varchar(100),deptName varchar(30),dob Date,gender varchar(10),primary key(studId));";
+        String query="create table if not exists Students(studId varchar(30) NOT NULL,name varchar(100) NOT NULL, deptName varchar(30) NOT NULL,dob Date,gender varchar(10) NOT NULL,primary key(studId));";
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps=con.prepareStatement(query);
@@ -93,6 +101,7 @@ public class Student extends Person {
         ps.setDate(4,java.sql.Date.valueOf(student.getDob()));
         ps.setString(5, student.getGender());
         ps.executeUpdate();
+        con.close();
     }
 
     public static  ArrayList<Student> Sort( String sortField,int order) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -121,11 +130,40 @@ public class Student extends Person {
         {
             System.out.println("FieldName "+sortField+" is not valid");
         }
-     return list;
+        con.close();
+        return list;
+    }
+    public static  ArrayList<Student> Search( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+
+        String query = "select * from students where " +fieldName+"='"+Search+"'";
+        System.out.println(query);
+        PreparedStatement ps=con.prepareStatement(query);
+        ResultSet rs;
+        ArrayList<Student> list = null;
+        try {
+            rs = ps.executeQuery();
+            list=new ArrayList<>();
+//            if(list.size()==0) Message.noRecords();
+            while(rs.next())
+            {
+                LocalDate ld=rs.getDate(4).toLocalDate();
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
+                list.add(temp);
+            }
+        }
+        catch (SQLException e)
+        {
+//            Message.noRecords();
+        }
+        con.close();
+        return list;
     }
 
-
-    public static  ArrayList<Student> Search( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static  ArrayList<Student> StrongSearch( String fieldName,String Search) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -138,6 +176,7 @@ public class Student extends Person {
         try {
             rs = ps.executeQuery();
             list=new ArrayList<>();
+            if(list.size()==0) Message.noRecords();
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
@@ -147,7 +186,7 @@ public class Student extends Person {
         }
         catch (SQLException e)
         {
-            System.out.println("FieldName "+fieldName+" is not valid");
+            Message.noRecords();
         }
         con.close();
         return list;
@@ -162,8 +201,37 @@ public class Student extends Person {
         String query="delete from Students where studId=?";
         PreparedStatement ps= con.prepareStatement(query);
         ps.setString(1,studId);
-        ps.executeUpdate();
-        System.out.println("Student removed successfully");
+        int x = ps.executeUpdate();
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
+    }
+
+    public static void updateViaID(String file) throws SQLException, FileNotFoundException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        String query="update Students set name=?,deptName=?,dob=?,gender=? where studId=?";
+        PreparedStatement ps= con.prepareStatement(query);
+        while(sc.hasNextLine())
+        {
+            String[] str=sc.nextLine().split(",");
+            String[] sr=str[3].split("-");
+            int year=Integer.parseInt(sr[2]);
+            int month=Integer.parseInt(sr[1]);
+            int day=Integer.parseInt(sr[0]);
+            java.sql.Date date= java.sql.Date.valueOf(year+"-"+month+"-"+day);
+            ps.setString(1,str[1]);
+            ps.setString(2,str[2]);
+            ps.setDate(3,date);
+            ps.setString(4,str[4]);
+            ps.setString(5,str[0]);
+            ps.executeUpdate();
+        }
     }
 
     public static void removeStudents() throws SQLException {
@@ -174,9 +242,10 @@ public class Student extends Person {
         Statement st=con.createStatement();
         String query="truncate Students";
         st.executeUpdate(query);
+        con.close();
     }
 
-    public static void update(String Id,String Field,String newValue) throws Exception {
+    public static void update(String Id,String Field,String newValue) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
@@ -184,7 +253,12 @@ public class Student extends Person {
 
         String query="update students set "+Field+"=\""+newValue+"\" where studId=\""+Id+"\"";
         Statement st=con.createStatement();
-        st.executeUpdate(query);
+        int x = st.executeUpdate(query);
+        if(x==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
     }
 
     public static int authentication(String id, String dob) throws SQLException {
@@ -198,8 +272,27 @@ public class Student extends Person {
         if(rs.next())  {
             String s = rs.getString(1).replace("-","");
             if(dob.equals(s)) return 1;
+            Message.loginSuccess();
         }
+        con.close();
         return 0;
+    }
+    public static void studentCourses(String studId) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select courses.courseId ,courses.title,courses.abbreviation,courses.credits from Students natural join courses where Students.studId="+"'"+studId+"'"+";";
+        Statement st=con.createStatement();
+        ResultSet rs= st.executeQuery(query);
+        int k=0;
+        while(rs.next()){
+            System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getInt(4));
+            k=1;
+        }
+        if(k==0)
+            Message.noRecords();
+
     }
 }
 

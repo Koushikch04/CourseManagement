@@ -3,6 +3,7 @@ package CommandLine;
 public class CommandLineArguments {
 
     public String toString() {
+
         String s = "";
         s += "-add <person>                                 : For adding a particular person(Student or Teacher) or course!\n";
         s += "-add <person> <filename>                      : For adding person(Student or Teacher) or course data through the given CSV File!\n";
