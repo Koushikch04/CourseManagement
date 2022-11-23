@@ -1,12 +1,14 @@
 package Courses;
 import AdditionalComponents.JdbcDetails;
+import AdditionalComponents.Message;
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-//course(course id, title, dept name, credits)
 public class courses {
      private String courseId;
      private String title;
@@ -75,7 +77,7 @@ public class courses {
         st.executeUpdate(query);
         query="insert into courses values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("src/Courses/"+file));
         while(sc.hasNextLine())
         {
             String[] str=sc.nextLine().split(",");
@@ -104,6 +106,7 @@ public class courses {
         ps.setInt(5,course.getCredits());
         ps.executeUpdate();
     }
+
     public static void removeCourse(String courseId) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
@@ -113,5 +116,79 @@ public class courses {
         PreparedStatement ps=con.prepareStatement(query);
         ps.setString(1,courseId);
         System.out.println(ps.executeUpdate()+" rows updated");
+    }
+    public static void removeAllCourses() throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "truncate courses";
+        Statement st=con.createStatement();
+        st.executeUpdate(query);
+    }
+    public static ArrayList<courses> Sort(String SortField,int order) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select * from courses order by "+SortField;
+        Statement st=con.createStatement();
+        if(order==0)
+            query+=" asc";
+        else
+            query+=" desc";
+        ResultSet rs=st.executeQuery(query);;
+        ArrayList<courses> courseList = new ArrayList<>();
+        while(rs.next()){
+            courses temp= new courses(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5));
+           courseList.add(temp);
+        }
+       return courseList;
+    }
+    public static ArrayList<courses> Search(String fieldName,String Search) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select * from courses where "+fieldName+"='"+Search+"'";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);;
+        ArrayList<courses> courseList = new ArrayList<>();
+        while(rs.next()){
+            courses temp= new courses(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5));
+            courseList.add(temp);
+        }
+        return courseList;
+    }
+    public static ArrayList<courses> StrongSearch(String fieldName,String Search) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select * from courses where "+fieldName+" like "+"'%"+Search+"%'";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(query);;
+        ArrayList<courses> courseList = new ArrayList<>();
+        while(rs.next()){
+            courses temp= new courses(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5));
+            courseList.add(temp);
+        }
+        return courseList;
+    }
+    public static void UpdateCourses(String Id,String Field,String newValue) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query="update courses set "+Field+"='"+newValue+"' where courseId='"+Id+"'";
+        Statement st=con.createStatement();
+        int res = st.executeUpdate(query);
+        if(res == 0){
+            Message.noRecords();
+        }
+        else {
+            Message.updated();
+        }
+        con.close();
     }
 }

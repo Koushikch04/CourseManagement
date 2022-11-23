@@ -3,7 +3,7 @@ package AdditionalComponents;
 public class JdbcDetails {
     private static String database = "java";
     private static String userName = "root";
-    private static String password = "Suprit@123";
+    private static String password = "root1234";
 
     public static String getDatabase() {
         return database;

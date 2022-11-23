@@ -62,12 +62,44 @@ public class Teacher extends Person{
         this.departmentName = departmentName;
     }
 
+    @Override
+    public String toString(){
+      return "ID:"+getTeacherID()+" name:"+getName()+" deptName:"+getDepartmentName()+" gender:"+getGender()+" salary:"+getSalary()+" dob:"+getDob()+" title:"+getTitle();
+    }
+
     public String calculateAge() {
         LocalDate curDate = LocalDate.now();
         Period period = Period.between(LocalDate.parse(super.getDob()), curDate);
         String ans = "Dr. " + super.getName() + " is " + period.getYears() + " years " + period.getMonths() + " months and " + period.getDays() + " days.";
         return ans;
     }
+
+    public static void updateViaID(String file) throws SQLException, FileNotFoundException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con= DriverManager.getConnection(url,UserName,PassWord);
+        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        String query="update Teacher set name=?,deptName=?,gender=?,salary=?,dob=? where teacherId=?";
+        PreparedStatement ps= con.prepareStatement(query);
+        while(sc.hasNextLine())
+        {
+            String[] str=sc.nextLine().split(",");
+            String[] sr=str[5].split("-");
+            int year=Integer.parseInt(sr[2]);
+            int month=Integer.parseInt(sr[1]);
+            int day=Integer.parseInt(sr[0]);
+            java.sql.Date date= java.sql.Date.valueOf(year+"-"+month+"-"+day);
+            ps.setString(1,str[1]);
+            ps.setString(2,str[2]);
+            ps.setString(3,str[3]);
+            ps.setDouble(4,Double.parseDouble(str[4]));
+            ps.setDate(5,date);
+            ps.setString(6,str[0]);
+            ps.executeUpdate();
+        }
+    }
+
 
     public static void addTeachers(String file) throws SQLException, FileNotFoundException {
         String url="jdbc:mysql://localhost:3306/"+ JdbcDetails.getDatabase();
@@ -167,8 +199,28 @@ public class Teacher extends Person{
         con.close();
         return teach;
     }
-
     public static ArrayList<Teacher> Search(String fieldName,String Search) throws SQLException {
+        String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
+        String UserName= JdbcDetails.getUserName();
+        String PassWord=JdbcDetails.getPassword();
+        Connection con = DriverManager.getConnection(url, UserName, PassWord);
+        String query = "select * from teacher where " +fieldName+"='"+Search+"'";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        ArrayList<Teacher> teach = new ArrayList<>();
+        while (rs.next()) {
+            LocalDate ld=rs.getDate(6).toLocalDate();
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
+            teach.add(temp);
+        }
+        if(teach.size()==0) {
+            con.close();
+            Message.noRecords();
+        }
+        con.close();
+        return teach;
+    }
+    public static ArrayList<Teacher> StrongSearch(String fieldName, String Search) throws SQLException {
         String url="jdbc:mysql://localhost:3306/"+JdbcDetails.getDatabase();
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
