@@ -194,7 +194,7 @@ public class Teacher extends Person{
         ArrayList<Teacher> teach = new ArrayList<>();
         while (rs.next()) {
             LocalDate ld=rs.getDate(6).toLocalDate();
-            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
         con.close();
@@ -211,7 +211,7 @@ public class Teacher extends Person{
         ArrayList<Teacher> teach = new ArrayList<>();
         while (rs.next()) {
             LocalDate ld=rs.getDate(6).toLocalDate();
-            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
         if(teach.size()==0) {
@@ -232,7 +232,7 @@ public class Teacher extends Person{
         ArrayList<Teacher> teach = new ArrayList<>();
         while (rs.next()) {
             LocalDate ld=rs.getDate(6).toLocalDate();
-            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()), rs.getString(7));
+            Teacher temp = new Teacher(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()), rs.getString(7));
             teach.add(temp);
         }
         if(teach.size()==0) {

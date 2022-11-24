@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -257,7 +259,7 @@ public class TeachersCommands {
                 try {
                     Teacher.addTeachers(args[2]);
                 } catch (Exception e) {
-                    Error.allFields();
+                    Error.DuplicateEntry();
                 }
             }
             Message.added();
@@ -266,7 +268,7 @@ public class TeachersCommands {
         }
     }
 
-    public static void connect(String args[]) {
+    public static void connect(String args[]) throws SQLException, FileNotFoundException {
         String values[] = new String[2];
         if(args[0].equals("-add")) {
             add(args);
@@ -293,13 +295,17 @@ public class TeachersCommands {
             }
             System.exit(0);
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
-            int x = 0;
+            int x =-1;
+            if(args.length > 3 && args[3].equals("desc")) x=1;
+            else if(args.length >3 &&args[3].equals("asc")) x=0;
+
             if(args.length > 3 && args[3].equals("desc")) x=1;
             try {
                 ArrayList<Teacher> teachers;
                 if(args[0].equals("-details")) {
                     teachers = Teacher.Sort("teacherId", 0);
                 } else {
+                    if(x==-1) Error.errorMsg("Invalid search Arguments");
                     teachers = Teacher.Sort(args[2], x);
                 }
                 if(teachers.size()==0) Message.noRecords();
@@ -309,7 +315,13 @@ public class TeachersCommands {
             }
         } else if(args[0].equals("-search")) {
             try {
-                ArrayList<Teacher> teachers = Teacher.Search(args[2], args[3]);
+                int l=4;
+                String temp = args[3];
+                while(l<args.length){
+                    temp+=" "+args[l];
+                    l++;
+                }
+                ArrayList<Teacher> teachers = Teacher.Search(args[2], temp);
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
@@ -351,6 +363,12 @@ public class TeachersCommands {
             }
         } else if(args[0].equals("-numericSearch")) {
             try {
+                 try{
+                     Double d = Double.parseDouble(args[3]);
+                 }
+                 catch(Exception e){
+                     Error.errorMsg("Enter only numerical values");
+                 }
                 ArrayList<Teacher> teachers = Teacher.numericSearch(args[2],args[3],args[4]);
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
@@ -358,5 +376,6 @@ public class TeachersCommands {
                 Error.unexpectedError();
             }
         }
+        else Error.errorMsg("Invalid arguments");
     }
 }

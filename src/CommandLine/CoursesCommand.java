@@ -9,7 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.lang.*;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CoursesCommand {
@@ -157,8 +159,8 @@ public class CoursesCommand {
         jt.setBounds(230,100,800,si);
         jt.getColumnModel().getColumn(0).setMaxWidth(50);
 
-        jt.getColumnModel().getColumn(3).setPreferredWidth(300);
-        jt.getColumnModel().getColumn(2).setPreferredWidth(100);
+        jt.getColumnModel().getColumn(2).setPreferredWidth(300);
+        jt.getColumnModel().getColumn(3).setPreferredWidth(100);
         jt.getColumnModel().getColumn(4).setPreferredWidth(30);
         jt.getColumnModel().getColumn(5).setPreferredWidth(100);
         jt.getColumnModel().getColumn(6).setPreferredWidth(70);
@@ -193,7 +195,7 @@ public class CoursesCommand {
         jt.setBounds(230,100,700,si);
         jt.getColumnModel().getColumn(0).setMaxWidth(50);
 
-        jt.getColumnModel().getColumn(3).setPreferredWidth(300);
+        jt.getColumnModel().getColumn(2).setPreferredWidth(300);
         jt.getColumnModel().getColumn(2).setPreferredWidth(100);
         jt.getColumnModel().getColumn(4).setPreferredWidth(100);
         jt.getColumnModel().getColumn(5).setPreferredWidth(70);
@@ -204,7 +206,7 @@ public class CoursesCommand {
         f.setVisible(true);
     }
 
-    private static void add(String[] args) {
+    private static void add(String[] args)  throws SQLException, FileNotFoundException{
         String values[] = new String[2];
         Login.log("Admin", values);
         int x = Admin.authentication(values[0], values[1]);
@@ -221,7 +223,7 @@ public class CoursesCommand {
                 try {
                     courses.addCourses(args[2]);
                 } catch (Exception e) {
-                    Error.errorMsg("File name is not correct!");
+                    Error.DuplicateEntry();
                 }
             }
             Message.added();
@@ -232,7 +234,7 @@ public class CoursesCommand {
 
 
 
-    public static void connect(String args[]) {
+    public static void connect(String args[]) throws SQLException, FileNotFoundException {
         String values[] = new String[2];
         if(args[0].equals("-add")) {
             add(args);
@@ -278,7 +280,13 @@ public class CoursesCommand {
             }
         } else if(args[0].equals("-search")) {
             try {
-                ArrayList<courses> course = courses.Search(args[2], args[3]);
+                int l=4;
+                String temp = args[3];
+                while(l<args.length){
+                    temp+=" "+args[l];
+                    l++;
+                }
+                ArrayList<courses> course = courses.Search(args[2], temp);
                 if(course.size()==0) Message.noRecords();
                 printCoursesDetails(course);
             } catch (Exception e) {
@@ -320,6 +328,13 @@ public class CoursesCommand {
                 Error.unexpectedError();
             }
         } else if(args[0].equals("-numericSearch")) {
+
+            try{
+                Double d = Double.parseDouble(args[3]);
+            }
+            catch(Exception e){
+                Error.errorMsg("Enter only numerical values");
+            }
             try {
                 ArrayList<courses> course = courses.numericSearch(args[2],args[4],args[3]);
                 if(course.size()==0) Message.noRecords();
@@ -336,5 +351,7 @@ public class CoursesCommand {
                 Error.unexpectedError();
             }
         }
+        else Error.errorMsg("Invalid arguments");
+
     }
 }

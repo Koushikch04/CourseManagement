@@ -58,8 +58,9 @@ public class Login {
         lblNewLabel_3.setIcon(new ImageIcon("AdditionalComponents/auth.jpeg"));
         lblNewLabel_3.setBounds(293, 20, 234, 234);
         fr.getContentPane().add(lblNewLabel_3);
-        fr.setLocationRelativeTo(null);
-        fr.setSize(541,330);
+//        fr.setLocationRelativeTo(null);
+        fr.setBounds(400,200,541,330);
+//        fr.setSize(541,330);
         //fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fr.setVisible(true);
     }
