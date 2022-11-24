@@ -351,7 +351,7 @@ public class TeachersCommands {
             }
         } else if(args[0].equals("-numericSearch")) {
             try {
-                ArrayList<Teacher> teachers = Teacher.numericSearch(args[2],args[4],args[3]);
+                ArrayList<Teacher> teachers = Teacher.numericSearch(args[2],args[3],args[4]);
                 if(teachers.size()==0) Message.noRecords();
                 printTeacherDetails(teachers);
             } catch (Exception e) {
