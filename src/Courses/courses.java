@@ -147,7 +147,6 @@ public class courses {
         else
             query+=" desc";
 
-        System.out.println(query);
         ResultSet rs=st.executeQuery(query);;
         ArrayList<courses> courseList = new ArrayList<>();
         while(rs.next()){
