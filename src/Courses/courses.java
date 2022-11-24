@@ -84,7 +84,7 @@ public class courses {
         st.executeUpdate(query);
         query="insert into courses values(?,?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("src/Courses/"+file));
+        Scanner sc=new Scanner(new File("Courses/"+file));
         while(sc.hasNextLine())
         {
             String[] str=sc.nextLine().split(",");
@@ -234,7 +234,7 @@ public class courses {
         String PassWord=JdbcDetails.getPassword();
         Connection con = DriverManager.getConnection(url, UserName, PassWord);
         String query = "update courses set InstructorId=?,title=?,abbreviation=?,deptName=?,credits=? where courseId=?";
-        Scanner sc  = new Scanner(new File("src/Courses/"+file));
+        Scanner sc  = new Scanner(new File("Courses/courses.csv"));
         PreparedStatement ps = con.prepareStatement(query);
         while(sc.hasNextLine()){
             String[] str = sc.nextLine().split(",");

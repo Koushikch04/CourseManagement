@@ -181,7 +181,7 @@ public class StudentsCommands {
 
         }
         int si = 470;
-        String column[]={"S. NO","STUDENT_ID","NAME","BRANCH","DOB","GENDER"};
+        String column[]={"S. NO","STUDENT_ID","NAME","DEPT_NAME","DOB","GENDER"};
         JTable jt=new JTable(data,column);
         jt.setBounds(230,100,800,si);
         jt.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -208,13 +208,13 @@ public class StudentsCommands {
                 try {
                     Student.addStudent(stud);
                 } catch (Exception e) {
-                    Error.DuplicateEntry();
+                    Error.allFields();
                 }
             } else if (args.length == 3) {
                 try {
                     Student.addStudents(args[2]);
                 } catch (Exception e) {
-                    Error.unexpectedError();
+                    Error.DuplicateEntry();
                 }
             }
             Message.added();
@@ -317,5 +317,7 @@ public class StudentsCommands {
                 Error.errorMsg("Unexpected error occured!");
             }
         }
+        else Error.errorMsg("Invalid arguments");
+
     }
 }

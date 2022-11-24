@@ -70,8 +70,6 @@ public class Student extends Person {
         Scanner sc=new Scanner(new File("personPackage/"+file));
         while(sc.hasNextLine())
         {
-            SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
             String[] str=sc.nextLine().split(",");
             String[] sr=str[3].split("-");
             int year=Integer.parseInt(sr[2]);
@@ -158,7 +156,7 @@ public class Student extends Person {
         }
         catch (SQLException e)
         {
-            Error.unexpectedError();
+            throw e;
         }
         con.close();
         return list;

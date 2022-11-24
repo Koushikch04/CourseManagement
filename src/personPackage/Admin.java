@@ -1,8 +1,8 @@
 package personPackage;
 
 public class Admin{
-    private static String userName = "CourseManagement";
-    private static int password = "Iiits@218".hashCode();
+    private static String userName = "iiits";
+    private static int password = "iiits@2022".hashCode();
 
     public static int authentication(String username, String pass) {
         try {

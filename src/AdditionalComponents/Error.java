@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.PublicKey;
+import java.sql.PreparedStatement;
 
 public class Error {
     public static void errorMsg(String s) {
@@ -16,7 +17,6 @@ public class Error {
         fr.getContentPane().add(l);
         fr.setSize(513,169);
         fr.getContentPane().setLayout(null);
-
         JButton btnNewButton = new JButton("OK");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
