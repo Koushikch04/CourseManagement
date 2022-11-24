@@ -44,6 +44,10 @@ public class CommandLineArguments {
         s += "                                   4.Operations for sorting are:-\n";
         s += "                                                                 1.  -asc :  means in ascending order\n";
         s += "                                                                 2.  -desc:  means in descending order\n";
+        s += "                                    5.CSV files for different objects are:";
+        s+="                                                                           1.Students.csv\n";
+        s+="                                                                           2.Teachers.csv\n";
+        s+="                                                                           3.courses.csv\n";
         s += "                                                                                                                                   ";
         s += "                                              BELOW ARE THE COMMAND LINE ARGUMENTS\n";
         s += "-add <person>                                             : For adding a particular person(Student or Teacher) or course!\n";

@@ -10,7 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
+import java.io.FileNotFoundException;
 import java.security.spec.ECField;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -221,7 +223,7 @@ public class StudentsCommands {
         }
     }
 
-    public static void connect(String args[]) {
+    public static void connect(String args[]) throws SQLException, FileNotFoundException {
         String values[] = new String[2];
 
         if (args[0].equals("-add")) {
@@ -248,13 +250,17 @@ public class StudentsCommands {
                 Error.loginFailed();
             }
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
-            int x = 0;
+            int x =-1;
             if(args.length > 3 && args[3].equals("desc")) x=1;
+            else if(args.length >3 &&args[3].equals("asc")) x=0;
+
+
             try {
                 ArrayList<Student> students;
                 if(args[0].equals("-details")) {
                     students = Student.Sort("studId", 0);
                 } else {
+                    if(x==-1) Error.errorMsg("Invalid Arguments for the order of sorting");
                     students = Student.Sort(args[2], x);
                 }
                 if(students.size()==0) Message.noRecords();
@@ -270,7 +276,6 @@ public class StudentsCommands {
                     temp+=" "+args[l];
                     l++;
                 }
-                System.out.println(temp);
                 ArrayList<Student> students = Student.Search(args[2], temp);
                 if(students.size()==0) Message.noRecords();
                 printStudentDetails(students);
@@ -284,8 +289,7 @@ public class StudentsCommands {
                 try {
                     Student.updateViaCSV(args[2]);
                 } catch (Exception e) {
-//                    Error.unexpectedError();
-                    System.out.println("hello");
+                    Error.unexpectedError();
                 }
                 Message.updated();
             } else {

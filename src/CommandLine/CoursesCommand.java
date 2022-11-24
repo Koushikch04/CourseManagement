@@ -259,13 +259,16 @@ public class CoursesCommand {
             }
             System.exit(0);
         } else if(args[0].equals("-sort") || args[0].equals("-details")) {
-            int x = 0;
+            int x = -1;
             if(args.length > 3 && args[3].equals("desc")) x=1;
+            else if(args.length >3 &&args[3].equals("asc")) x=0;
+
             try {
                 ArrayList<courses> course;
                 if(args[0].equals("-details")) {
                     course = courses.Sort("courseId", 0);
                 } else {
+                    if(x==-1) Error.errorMsg("Invalid Arguments for the order of sorting");
                     course = courses.Sort(args[2], x);
                 }
                 if(course.size()==0) Message.noRecords();
