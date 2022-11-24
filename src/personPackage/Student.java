@@ -151,7 +151,7 @@ public class Student extends Person {
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
-                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
             if(list.size()==0) Message.noRecords();
@@ -181,7 +181,7 @@ public class Student extends Person {
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
-                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
         }
@@ -215,7 +215,7 @@ public class Student extends Person {
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("personPackage/"+file));
         String query="update Students set name=?,deptName=?,dob=?,gender=? where studId=?";
         PreparedStatement ps= con.prepareStatement(query);
         while(sc.hasNextLine())

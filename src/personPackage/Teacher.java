@@ -80,7 +80,7 @@ public class Teacher extends Person{
         String UserName= JdbcDetails.getUserName();
         String PassWord=JdbcDetails.getPassword();
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("personPackage/"+file));
         String query="update Teacher set name=?,deptName=?,gender=?,salary=?,dob=? where teacherId=?";
         PreparedStatement ps= con.prepareStatement(query);
         while(sc.hasNextLine())
