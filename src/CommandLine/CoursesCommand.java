@@ -230,6 +230,8 @@ public class CoursesCommand {
         }
     }
 
+
+
     public static void connect(String args[]) {
         String values[] = new String[2];
         if(args[0].equals("-add")) {

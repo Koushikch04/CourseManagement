@@ -71,7 +71,7 @@ public class courses {
     }
     @Override
     public String toString() {
-        return "courseId:"+getCourseId()+" title:"+getTitle()+" deptName:"+getDeptName()+" credits:"+getCredits();
+        return "courseId:"+getCourseId()+"Instructor Id:"+InstructorId+" title:"+getTitle()+" deptName:"+getDeptName()+" credits:"+getCredits();
     }
 
     public static void addCourses(String file) throws SQLException, FileNotFoundException {
@@ -146,6 +146,8 @@ public class courses {
             query+=" asc";
         else
             query+=" desc";
+
+        System.out.println(query);
         ResultSet rs=st.executeQuery(query);;
         ArrayList<courses> courseList = new ArrayList<>();
         while(rs.next()){

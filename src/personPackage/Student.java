@@ -67,7 +67,7 @@ public class Student extends Person {
         st.executeUpdate(query);
         query="insert into Students values(?,?,?,?,?)";
         PreparedStatement ps= con.prepareStatement(query);
-        Scanner sc=new Scanner(new File("src/personPackage/"+file));
+        Scanner sc=new Scanner(new File("personPackage/"+file));
         while(sc.hasNextLine())
         {
             SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
@@ -79,10 +79,10 @@ public class Student extends Person {
             int day=Integer.parseInt(sr[0]);
             java.sql.Date date= java.sql.Date.valueOf(year+"-"+month+"-"+day);
             ps.setString(1,str[0].trim());
-            ps.setString(2,str[1]);
-            ps.setString(3,str[2]);
+            ps.setString(2,str[1].trim());
+            ps.setString(3,str[2].trim());
             ps.setDate(4,date);
-            ps.setString(5,str[4]);
+            ps.setString(5,str[4].trim());
             ps.executeUpdate();
         }
         con.close();
@@ -124,7 +124,7 @@ public class Student extends Person {
             while(rs.next())
             {
                 LocalDate ld=rs.getDate(4).toLocalDate();
-                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getDayOfMonth(),(short)ld.getDayOfMonth()),rs.getString(5));
+                Student temp=new Student(rs.getString(1),rs.getString(2),rs.getString(3),new Date(ld.getYear(),(short)ld.getMonthValue(),(short)ld.getDayOfMonth()),rs.getString(5));
                 list.add(temp);
             }
         }
@@ -142,7 +142,6 @@ public class Student extends Person {
         Connection con= DriverManager.getConnection(url,UserName,PassWord);
 
         String query = "select * from students where " +fieldName+"='"+Search+"'";
-        System.out.println(query);
         PreparedStatement ps=con.prepareStatement(query);
         ResultSet rs;
         ArrayList<Student> list = null;
@@ -271,10 +270,9 @@ public class Student extends Person {
         String query = "select courses.courseId,courses.InstructorId,courses.title,courses.abbreviation,courses.deptName,courses.credits from Students natural join courses where Students.studId="+"'"+studId+"'"+";";
         Statement st=con.createStatement();
         ResultSet rs;
-        ArrayList<courses> list = null;
+        ArrayList<courses> list = new ArrayList<>();
         try {
             rs = st.executeQuery(query);
-            list=new ArrayList<>();
             while(rs.next())
             {
                 courses temp=new courses(rs.getString(1),rs.getString(2),rs.getString(3), rs.getString(4),rs.getString(5), Integer.parseInt(rs.getString(6)));

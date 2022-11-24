@@ -47,4 +47,8 @@ public class Error {
     }
 
     public static void unexpectedError() {errorMsg("Unexpected Error Occurred!");}
+
+    public static void DuplicateEntry(){
+        errorMsg("Duplicate entry Already Present or All Field values are not filled");
+    }
 }

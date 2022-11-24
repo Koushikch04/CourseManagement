@@ -206,7 +206,7 @@ public class StudentsCommands {
                 try {
                     Student.addStudent(stud);
                 } catch (Exception e) {
-                    Error.allFields();
+                    Error.DuplicateEntry();
                 }
             } else if (args.length == 3) {
                 try {
@@ -264,7 +264,14 @@ public class StudentsCommands {
             }
         } else if(args[0].equals("-search")) {
             try {
-                ArrayList<Student> students = Student.Search(args[2], args[3]);
+                int l=4;
+                String temp = args[3];
+                while(l<args.length){
+                    temp+=" "+args[l];
+                    l++;
+                }
+                System.out.println(temp);
+                ArrayList<Student> students = Student.Search(args[2], temp);
                 if(students.size()==0) Message.noRecords();
                 printStudentDetails(students);
             } catch (Exception e) {
@@ -277,7 +284,8 @@ public class StudentsCommands {
                 try {
                     Student.updateViaCSV(args[2]);
                 } catch (Exception e) {
-                    Error.unexpectedError();
+//                    Error.unexpectedError();
+                    System.out.println("hello");
                 }
                 Message.updated();
             } else {

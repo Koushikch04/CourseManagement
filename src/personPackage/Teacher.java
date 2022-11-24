@@ -1,5 +1,6 @@
 package personPackage;
 
+import AdditionalComponents.Error;
 import AdditionalComponents.JdbcDetails;
 import AdditionalComponents.Date;
 import AdditionalComponents.Message;
@@ -257,6 +258,9 @@ public class Teacher extends Person{
         }
         else if(operation.equals("-e")){
             query+="="+Double.parseDouble(value);
+        }
+        else{
+            Error.errorMsg("Invalid Oper");
         }
         Statement st = con.prepareStatement(query);
         ResultSet rs = st.executeQuery(query);
